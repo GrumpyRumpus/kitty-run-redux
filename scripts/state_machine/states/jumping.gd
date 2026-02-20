@@ -1,0 +1,48 @@
+class_name JumpingState
+extends State
+
+@export var jump_velocity: float = 350
+@export_custom(PROPERTY_HINT_NONE, "suffix:px/s") var base_move_speed: float = 100
+@export var acceleration: float = 8
+
+var move_speed: float = 0
+
+
+func _ready() -> void:
+	pass
+
+
+func init() -> void:
+	pass
+
+
+func enter() -> void:
+	#print("entered: ", self.name)
+	kitty.animated_sprite.play("jumping")
+	kitty.audio_stream_player.play()
+	kitty.velocity.y = -jump_velocity
+	if kitty.is_on_floor():
+		kitty.can_double_jump = true
+	move_speed = maxf(base_move_speed, abs(kitty.velocity.x))
+
+
+func exit() -> void:
+	#print("exited: ", self.name)
+	pass
+
+
+func handle_input(event: InputEvent) -> State:
+	if event.is_action_released("up"):
+		kitty.velocity.y *= 0.3
+		return falling_state
+	return null
+
+
+func process(delta: float) -> State:
+	return null
+
+
+func process_physics(delta: float) -> State:
+	if kitty.velocity.y >= 0:
+		return falling_state
+	return null

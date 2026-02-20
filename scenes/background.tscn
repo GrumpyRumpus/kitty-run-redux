@@ -1,0 +1,107 @@
+[gd_scene load_steps=11 format=3 uid="uid://bkf30hwr3kqln"]
+
+[ext_resource type="Texture2D" uid="uid://sld8ci085m41" path="res://assets/scenery/background_3.png" id="1_8a210"]
+[ext_resource type="Script" uid="uid://6vte0g0qqp06" path="res://scripts/background.gd" id="1_l5f8m"]
+[ext_resource type="Texture2D" uid="uid://lpcg5s6qca5y" path="res://assets/scenery/background_2.png" id="2_i0bun"]
+[ext_resource type="Texture2D" uid="uid://d0dxbikhpled1" path="res://assets/scenery/background_1.png" id="3_cu2xa"]
+[ext_resource type="Texture2D" uid="uid://blepjg2lxb14i" path="res://assets/scenery/background_0.png" id="4_wagpf"]
+[ext_resource type="Texture2D" uid="uid://dqyfg4fpvrqyv" path="res://assets/scenery/trees.png" id="5_8kykw"]
+[ext_resource type="Texture2D" uid="uid://bx84yswvjphw2" path="res://assets/scenery/frontleaves.png" id="6_my3ow"]
+[ext_resource type="Texture2D" uid="uid://b0l3d131wsac2" path="res://assets/scenery/bushes.png" id="7_0jf1w"]
+[ext_resource type="Shader" uid="uid://dgd6rdovkjcps" path="res://scripts/shaders/god_rays.gdshader" id="8_6vm3t"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8efq7"]
+shader = ExtResource("8_6vm3t")
+shader_parameter/angle = -0.3
+shader_parameter/position = -0.2
+shader_parameter/spread = 0.5
+shader_parameter/cutoff = 0.1
+shader_parameter/falloff = 0.2
+shader_parameter/edge_fade = 0.15
+shader_parameter/speed = 1.0
+shader_parameter/ray1_density = 8.0
+shader_parameter/ray2_density = 30.0
+shader_parameter/ray2_intensity = 0.3
+shader_parameter/ray_color = Color(1, 0.9, 0.65, 0.8)
+shader_parameter/hdr = false
+shader_parameter/seed = 5.0
+shader_parameter/pixelation = 100.0
+shader_parameter/quantize_colors = true
+shader_parameter/color_levels = 7
+shader_parameter/dither = false
+shader_parameter/dither_strength = 0.5
+shader_parameter/opacity = 1.0
+
+[node name="Background" type="Node2D"]
+script = ExtResource("1_l5f8m")
+
+[node name="Base Layer" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0, 0)
+repeat_size = Vector2(512, 0)
+repeat_times = 2
+
+[node name="Background3" type="Sprite2D" parent="Base Layer"]
+texture_filter = 1
+texture = ExtResource("1_8a210")
+centered = false
+
+[node name="Farthest Trees" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.25, 0.25)
+repeat_size = Vector2(512, 0)
+repeat_times = 2
+
+[node name="Background2" type="Sprite2D" parent="Farthest Trees"]
+texture_filter = 1
+texture = ExtResource("2_i0bun")
+centered = false
+
+[node name="Farther Trees" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.5, 0.5)
+repeat_size = Vector2(512, 0)
+repeat_times = 2
+
+[node name="Background1" type="Sprite2D" parent="Farther Trees"]
+texture_filter = 1
+texture = ExtResource("3_cu2xa")
+centered = false
+
+[node name="Far Trees" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.75, 0.75)
+repeat_size = Vector2(512, 0)
+repeat_times = 2
+
+[node name="Background0" type="Sprite2D" parent="Far Trees"]
+texture_filter = 1
+texture = ExtResource("4_wagpf")
+centered = false
+
+[node name="Trees" type="Parallax2D" parent="."]
+repeat_size = Vector2(512, 0)
+repeat_times = 2
+
+[node name="Trees" type="Sprite2D" parent="Trees"]
+texture_filter = 1
+texture = ExtResource("5_8kykw")
+centered = false
+
+[node name="Frontleaves" type="Sprite2D" parent="Trees"]
+texture_filter = 1
+texture = ExtResource("6_my3ow")
+centered = false
+
+[node name="GodRays" type="ColorRect" parent="Trees"]
+material = SubResource("ShaderMaterial_8efq7")
+offset_left = -16.0
+offset_top = -48.0
+offset_right = 184.0
+offset_bottom = 256.0
+
+[node name="Bushes" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.9, 0.9)
+repeat_size = Vector2(512, 0)
+repeat_times = 2
+
+[node name="Bushes" type="Sprite2D" parent="Bushes"]
+texture_filter = 1
+texture = ExtResource("7_0jf1w")
+centered = false

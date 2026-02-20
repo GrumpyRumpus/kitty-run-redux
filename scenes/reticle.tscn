@@ -1,0 +1,50 @@
+[gd_scene load_steps=11 format=3 uid="uid://bs2b8c0f0a3ge"]
+
+[ext_resource type="Texture2D" uid="uid://bftob0b7x243o" path="res://assets/reticle/crosshair_0.png" id="1_382c3"]
+[ext_resource type="Script" uid="uid://bamho54o6oqpd" path="res://scripts/reticle.gd" id="1_t68ac"]
+[ext_resource type="Texture2D" uid="uid://cimb3h3pwmo4p" path="res://assets/reticle/crosshair_1.png" id="2_coeqf"]
+[ext_resource type="Texture2D" uid="uid://81547exfhe4y" path="res://assets/reticle/crosshair_2.png" id="3_252br"]
+[ext_resource type="Texture2D" uid="uid://dny2ti8lehu6u" path="res://assets/reticle/crosshair_3.png" id="4_x27h3"]
+[ext_resource type="Texture2D" uid="uid://btpo87d7g5d5x" path="res://assets/reticle/crosshair_4.png" id="5_spkpu"]
+[ext_resource type="Texture2D" uid="uid://sn3yyody77qy" path="res://assets/reticle/crosshair_5.png" id="6_1bm3f"]
+[ext_resource type="Texture2D" uid="uid://33bkx3i2i7d1" path="res://assets/reticle/crosshair_6.png" id="7_ta713"]
+[ext_resource type="Texture2D" uid="uid://b38doiul5gor" path="res://assets/reticle/crosshair_7.png" id="8_ta8yt"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_typfd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_382c3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_coeqf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_252br")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_x27h3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_spkpu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_1bm3f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ta713")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ta8yt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Reticle" type="AnimatedSprite2D"]
+visible = false
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_typfd")
+autoplay = "default"
+script = ExtResource("1_t68ac")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bta4hehbn6d3q"]
+
+[ext_resource type="Script" uid="uid://cnavx8qw1w655" path="res://scenes/components/shoot_component.gd" id="1_d0mk6"]
+
+[node name="ShootComponent" type="Node" node_paths=PackedStringArray("bullet_timer")]
+script = ExtResource("1_d0mk6")
+bullet_timer = NodePath("BulletTimer")
+
+[node name="BulletTimer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true

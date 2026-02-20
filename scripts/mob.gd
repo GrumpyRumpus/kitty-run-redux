@@ -1,0 +1,99 @@
+class_name Mob
+extends AnimatableBody2D
+
+signal mob_killed(pos: Vector2)
+
+const DEATH_PARTICLES := preload("res://scenes/death_particles.tscn")
+
+@export var flap_path_left: PathFollow2D
+@export var flap_path_right: PathFollow2D
+@export var swoop_path: PathFollow2D
+@export var spiral_path: PathFollow2D
+@export var shoot_component: ShootComponent
+@export var target: CharacterBody2D
+@export var sprite: AnimatedSprite2D
+
+enum States {FLAP, SWOOP, SPIRAL, SHOOT}
+
+var state: States = States.FLAP
+var health: int = 3
+var is_dead: bool = false
+
+
+func _physics_process(delta: float) -> void:
+	if is_dead or not is_instance_valid(target):
+		return
+	match state:
+		States.FLAP:
+			var flap_path: PathFollow2D
+			if position.x > get_viewport_rect().size.x / 2:
+				flap_path = flap_path_left
+			else:
+				flap_path = flap_path_right
+			if follow_path(delta, flap_path) == 1:
+				state = [States.SWOOP, States.SPIRAL].pick_random()
+		States.SWOOP:
+			if follow_path(delta, swoop_path) > 0.99:
+				state = [States.SPIRAL, States.SHOOT].pick_random()
+		States.SPIRAL:
+			if follow_path(delta, spiral_path) > 0.99:
+				state = [States.SWOOP, States.SHOOT].pick_random()
+		States.SHOOT:
+			if shoot_component.bullet_timer.time_left == 0:
+				state = [States.SWOOP, States.SPIRAL].pick_random()
+			shoot_component.handle_shoot(global_position, target.global_position, true)
+
+
+func _process(delta: float) -> void:
+	if is_dead:
+		return
+	# off-screen cleanup
+	var vp := get_viewport_rect()
+	if position.x < -200 or position.x > vp.size.x + 200 \
+		or position.y < -200 or position.y > vp.size.y + 200:
+		queue_free()
+		return
+	match state:
+		States.FLAP | States.SWOOP | States.SPIRAL:
+			sprite.play("flap")
+		States.SHOOT:
+			sprite.play("shoot")
+
+
+func take_damage(amount: int) -> void:
+	if is_dead or health <= 0:
+		return
+	health -= amount
+	if health <= 0:
+		_die()
+	else:
+		sprite.play("hurt")
+		var tween := create_tween()
+		tween.tween_property(sprite, "modulate", Color.WHITE, 0.15)
+		await tween.finished
+		if not is_dead:
+			sprite.play("flap")
+
+
+func _die() -> void:
+	is_dead = true
+	mob_killed.emit(global_position)
+	# spawn death particles
+	var particles := DEATH_PARTICLES.instantiate()
+	particles.global_position = global_position
+	get_tree().current_scene.get_node("World/Level").add_child(particles)
+	particles.emitting = true
+	# auto-free particles after lifetime
+	get_tree().create_timer(particles.lifetime + 0.1).timeout.connect(particles.queue_free)
+	var tween := create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 0.3)
+	await tween.finished
+	queue_free()
+
+
+func follow_path(delta: float, path: PathFollow2D, speed: int = 50) -> float:
+	var previous_position = path.position
+	path.progress += speed * delta
+	var current_position = path.position
+	self.position += current_position - previous_position
+	return path.progress_ratio

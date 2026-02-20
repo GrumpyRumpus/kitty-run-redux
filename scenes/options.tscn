@@ -1,0 +1,114 @@
+[gd_scene load_steps=2 format=3 uid="uid://mj05u1jfjxm"]
+
+[ext_resource type="Script" path="res://scripts/options.gd" id="1_opts"]
+
+[node name="Options" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_opts")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.0
+offset_top = -82.0
+offset_right = 112.0
+offset_bottom = 82.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Sound" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="SFXLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Sound"]
+layout_mode = 2
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Sound"]
+layout_mode = 2
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/TabContainer/Sound"]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Sound"]
+layout_mode = 2
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Sound"]
+layout_mode = 2
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/TabContainer/Sound"]
+layout_mode = 2
+
+[node name="MuteLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Sound"]
+layout_mode = 2
+text = "Mute"
+
+[node name="MuteCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Sound"]
+layout_mode = 2
+
+[node name="Video" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="SizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+text = "Window Size"
+
+[node name="SizeOption" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+item_count = 3
+popup/item_0/text = "1x (512x256)"
+popup/item_0/id = 0
+popup/item_1/text = "2x (1024x512)"
+popup/item_1/id = 1
+popup/item_2/text = "3x (1536x768)"
+popup/item_2/id = 2
+selected = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+
+[node name="VHSLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+text = "VHS Filter"
+
+[node name="VHSCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+button_pressed = true
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/TabContainer/Sound/SFXSlider" to="." method="_on_sfx_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/TabContainer/Sound/MusicSlider" to="." method="_on_music_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Sound/MuteCheckBox" to="." method="_on_mute_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/TabContainer/Video/SizeOption" to="." method="_on_size_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Video/VHSCheckBox" to="." method="_on_vhs_toggled"]

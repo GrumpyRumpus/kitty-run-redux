@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://7snpi3e2fnf3"]
+
+[ext_resource type="Script" uid="uid://ceq43u1felry0" path="res://scripts/mob_spawner.gd" id="1_ljl1v"]
+
+[node name="MobSpawner" type="Node2D"]
+script = ExtResource("1_ljl1v")
+
+[node name="MobSpawnTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="MobSpawnTimer" to="." method="_on_mob_spawn_timer_timeout"]

@@ -1,0 +1,111 @@
+[gd_scene load_steps=6 format=3 uid="uid://ceyiy0s1o4tbs"]
+
+[ext_resource type="Script" uid="uid://coudk8y0eppj4" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="PackedScene" uid="uid://bkf30hwr3kqln" path="res://scenes/background.tscn" id="2_ekxnf"]
+[ext_resource type="PackedScene" uid="uid://mj05u1jfjxm" path="res://scenes/options.tscn" id="3_bqqt6"]
+[ext_resource type="Shader" uid="uid://uugfpnvc1p4n" path="res://scripts/shaders/vhs.gdshader" id="4_vhs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vhs"]
+shader = ExtResource("4_vhs")
+shader_parameter/wiggle = 0.03
+shader_parameter/wiggle_speed = 25.0
+shader_parameter/smear = 1.0
+shader_parameter/blur_samples = 15
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l6cm7")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" parent="Panel" instance=ExtResource("2_ekxnf")]
+menu_mode = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -87.5
+offset_right = 128.0
+offset_bottom = 87.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.098, 0.09, 0.141, 0.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.5
+offset_top = -76.5
+offset_right = 120.5
+offset_bottom = 76.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.965, 0.757, 0.467, 1)
+theme_override_font_sizes/font_size = 42
+text = "Kitty Run"
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Start Game"
+
+[node name="OptionButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Options"
+expand_icon = true
+
+[node name="ExitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Exit"
+
+[node name="HighScoreLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.965, 0.757, 0.467, 1)
+theme_override_font_sizes/font_size = 16
+text = ""
+horizontal_alignment = 1
+
+[node name="Options" parent="." instance=ExtResource("3_bqqt6")]
+visible = false
+layout_mode = 1
+
+[node name="VHS" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="VHS"]
+material = SubResource("ShaderMaterial_vhs")
+offset_right = 512.0
+offset_bottom = 256.0
+mouse_filter = 2
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/OptionButton" to="." method="_on_option_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="Options/MarginContainer/VBoxContainer/BackButton" to="." method="_on_options_back_pressed"]

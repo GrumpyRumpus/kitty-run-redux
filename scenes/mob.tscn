@@ -1,0 +1,166 @@
+[gd_scene load_steps=25 format=3 uid="uid://crkuh1eugwf58"]
+
+[ext_resource type="Script" uid="uid://bygqb7tua2css" path="res://scripts/mob.gd" id="1_hict5"]
+[ext_resource type="Texture2D" uid="uid://d2staq4oent0i" path="res://assets/enemy/enemy_0.png" id="1_lgqhy"]
+[ext_resource type="Texture2D" uid="uid://b0a5y4ia2b1gi" path="res://assets/enemy/enemy_1.png" id="2_m170w"]
+[ext_resource type="Texture2D" uid="uid://bdlxg33jkm080" path="res://assets/enemy/enemy_2.png" id="3_hict5"]
+[ext_resource type="Texture2D" uid="uid://do1ygykxdrtsg" path="res://assets/enemy/enemy_3.png" id="4_eucmk"]
+[ext_resource type="Texture2D" uid="uid://cil0h7pi3gjya" path="res://assets/enemy/enemy_4.png" id="5_nk21u"]
+[ext_resource type="Texture2D" uid="uid://p0pb30kktbw2" path="res://assets/enemy/enemy_5.png" id="6_cq7k1"]
+[ext_resource type="Texture2D" uid="uid://bbxbv67pu6uu0" path="res://assets/enemy/enemy_6.png" id="7_mq56s"]
+[ext_resource type="Texture2D" uid="uid://ehqoe31agfh6" path="res://assets/enemy/enemy_7.png" id="8_fkklv"]
+[ext_resource type="Texture2D" uid="uid://cjsv5odyplure" path="res://assets/enemy/enemy_hurting_0.png" id="9_pch0e"]
+[ext_resource type="Texture2D" uid="uid://dbo88e6f4a6wv" path="res://assets/enemy/enemy_hurting_1.png" id="10_rswon"]
+[ext_resource type="Texture2D" uid="uid://bat65070n7xix" path="res://assets/enemy/enemy_hurting_2.png" id="11_gtorj"]
+[ext_resource type="Texture2D" uid="uid://cbgqvg7kfhkga" path="res://assets/enemy/enemy_hurting_3.png" id="12_4y8u8"]
+[ext_resource type="Texture2D" uid="uid://bkd3tgiqijge3" path="res://assets/enemy/enemy_shooting_0.png" id="13_n2edf"]
+[ext_resource type="Texture2D" uid="uid://d00msvvxoac5o" path="res://assets/enemy/enemy_shooting_1.png" id="14_q45gf"]
+[ext_resource type="Texture2D" uid="uid://36iomclfssr2" path="res://assets/enemy/enemy_shooting_2.png" id="15_wfby6"]
+[ext_resource type="Texture2D" uid="uid://dq31iq38t7hvw" path="res://assets/enemy/enemy_shooting_3.png" id="16_u80t3"]
+[ext_resource type="PackedScene" uid="uid://bta4hehbn6d3q" path="res://scenes/components/shoot_component.tscn" id="18_hict5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l31qy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_lgqhy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_m170w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_hict5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_eucmk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_nk21u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_cq7k1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_mq56s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_fkklv")
+}],
+"loop": true,
+"name": &"flap",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_pch0e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_rswon")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_gtorj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_4y8u8")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_n2edf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_q45gf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_wfby6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_u80t3")
+}],
+"loop": true,
+"name": &"shoot",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hict5"]
+radius = 8.0
+
+[sub_resource type="Curve2D" id="Curve2D_cq7k1"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 8.68993, -22.3042, -8.68993, 22.3042, -32, 0, 8.1106, 21.1455, -8.1106, -21.1455, -64, 0, 6.08295, -22.0145, -6.08295, 22.0145, -96, 0, 9.84859, 29.5458, -9.84859, -29.5458, -128, 0, 5.79329, -19.4075, -5.79329, 19.4075, -160, 0, 11.8762, 30.9941, -11.8762, -30.9941, -192, 0, 10.7176, -20.5662, -10.7176, 20.5662, -224, 0, 6.08295, 12.1659, -6.08295, -12.1659, -256, 0)
+}
+point_count = 9
+
+[sub_resource type="Curve2D" id="Curve2D_hict5"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, -0.266056, 22.8078, 0.266056, -22.8078, 32, 0, 0.301145, -21.7984, -0.301145, 21.7984, 64, 0, -0.342984, 22.1617, 0.342984, -22.1617, 96, 0, -1.02428, -21.4142, 1.02428, 21.4142, 128, 0, -1.72792, 20.3414, 1.72792, -20.3414, 160, 0, -0.234291, -21.18, 0.234291, 21.18, 192, 0, 0, 0, 0, 0, 200, 16, -0.00275612, 22.9301, 0.00275612, -22.9301, 224, 0, 0, 0, 0, 0, 256, 0)
+}
+point_count = 10
+
+[sub_resource type="Curve2D" id="Curve2D_eucmk"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, -8.38338, 7.71594, 8.38338, -7.71594, 25.0272, 8, -7.60586, -7.91378, 7.60586, 7.91378, 50.0544, 0, 6.495, -20.5758, -6.495, 20.5758, 75.0816, 48, -5.5858, 17.806, 5.5858, -17.806, -41.712, 32, 0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
+[sub_resource type="Curve2D" id="Curve2D_nk21u"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 4.17754, 15.1131, -4.17754, -15.1131, 16, -16, 10.9371, -4.98321, -10.9371, 4.98321, -16, -24, -0.518896, -16.6897, 0.518896, 16.6897, -32, 0, -16.1461, 0.726153, 16.1461, -0.726153, 0, 32, -0.00509167, 15.3571, 0.00509167, -15.3571, 32, 0, 53.208, 0.424876, -53.208, -0.424876, -8, -48, -0.350494, -15.7722, 0.350494, 15.7722, -56, 0, -19.6277, -2.10296, 19.6277, 2.10296, -32, 32, 0, 0, 0, 0, 0, 0)
+}
+point_count = 10
+
+[node name="Mob" type="AnimatableBody2D" node_paths=PackedStringArray("flap_path_left", "flap_path_right", "swoop_path", "spiral_path", "shoot_component", "sprite")]
+script = ExtResource("1_hict5")
+flap_path_left = NodePath("FlapPathLeft/FlapPathFollow")
+flap_path_right = NodePath("FlapPathRight/FlapPathFollow")
+swoop_path = NodePath("SwoopPath/SwoopPathFollow")
+spiral_path = NodePath("SpiralPath/SpiralPathFollow")
+shoot_component = NodePath("ShootComponent")
+sprite = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_l31qy")
+animation = &"shoot"
+autoplay = "flap"
+frame = 3
+frame_progress = 0.307365
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CircleShape2D_hict5")
+
+[node name="ShootComponent" parent="." instance=ExtResource("18_hict5")]
+
+[node name="FlapPathLeft" type="Path2D" parent="."]
+curve = SubResource("Curve2D_cq7k1")
+
+[node name="FlapPathFollow" type="PathFollow2D" parent="FlapPathLeft"]
+rotation = 3.14159
+rotates = false
+loop = false
+
+[node name="FlapPathRight" type="Path2D" parent="."]
+curve = SubResource("Curve2D_hict5")
+
+[node name="FlapPathFollow" type="PathFollow2D" parent="FlapPathRight"]
+rotates = false
+loop = false
+
+[node name="SwoopPath" type="Path2D" parent="."]
+scale = Vector2(0.958956, 1)
+curve = SubResource("Curve2D_eucmk")
+
+[node name="SwoopPathFollow" type="PathFollow2D" parent="SwoopPath"]
+rotation = -1.09018
+rotates = false
+
+[node name="SpiralPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_nk21u")
+
+[node name="SpiralPathFollow" type="PathFollow2D" parent="SpiralPath"]
+rotation = -0.785398
+rotates = false

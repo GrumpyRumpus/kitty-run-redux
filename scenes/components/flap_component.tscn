@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvthqjf1d80ub"]
+
+[ext_resource type="Script" uid="uid://bpvp53x5npj0m" path="res://scenes/components/flap_component.gd" id="1_nexk3"]
+
+[node name="FlapComponent" type="Node" node_paths=PackedStringArray("flap_timer")]
+script = ExtResource("1_nexk3")
+flap_timer = NodePath("FlapTimer")
+
+[node name="FlapTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true

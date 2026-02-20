@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/score_popup.gd" id="1_popup"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_popup"]
+font_color = Color(0.965, 0.757, 0.467, 1)
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
+
+[node name="ScorePopup" type="Label"]
+z_index = 10
+offset_left = -20.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 8.0
+text = "+1"
+label_settings = SubResource("LabelSettings_popup")
+horizontal_alignment = 1
+script = ExtResource("1_popup")

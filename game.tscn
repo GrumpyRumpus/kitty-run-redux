@@ -1,0 +1,141 @@
+[gd_scene load_steps=15 format=3 uid="uid://ccniuhxymrgeb"]
+
+[ext_resource type="PackedScene" uid="uid://bkf30hwr3kqln" path="res://scenes/background.tscn" id="1_e2o6t"]
+[ext_resource type="Script" uid="uid://du5utxi0w5o8l" path="res://game.gd" id="1_hve3p"]
+[ext_resource type="Script" uid="uid://vl08s4ykleg1" path="res://scripts/level.gd" id="1_vef74"]
+[ext_resource type="PackedScene" uid="uid://bamdlbn0v5fxh" path="res://scenes/hud.tscn" id="4_fc0e3"]
+[ext_resource type="PackedScene" uid="uid://bs2b8c0f0a3ge" path="res://scenes/reticle.tscn" id="5_eow3j"]
+[ext_resource type="PackedScene" uid="uid://c1g4cm7jdn200" path="res://scenes/grounds.tscn" id="5_j5wjh"]
+[ext_resource type="PackedScene" uid="uid://c51r5oafed6on" path="res://scenes/world_boundary.tscn" id="6_vef74"]
+[ext_resource type="PackedScene" uid="uid://bpwj4hs5n35kq" path="res://scenes/kitty.tscn" id="7_j5wjh"]
+[ext_resource type="PackedScene" uid="uid://7snpi3e2fnf3" path="res://scenes/mob_spawner.tscn" id="7_vef74"]
+[ext_resource type="Shader" uid="uid://uugfpnvc1p4n" path="res://scripts/shaders/vhs.gdshader" id="10_hve3p"]
+[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="11_pause"]
+[ext_resource type="Shader" path="res://scripts/shaders/pixel_transition.gdshader" id="12_transition"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mfdv2"]
+shader = ExtResource("10_hve3p")
+shader_parameter/wiggle = 0.03
+shader_parameter/wiggle_speed = 25.0
+shader_parameter/smear = 1.0
+shader_parameter/blur_samples = 15
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_transition"]
+shader = ExtResource("12_transition")
+shader_parameter/progress = 0.0
+shader_parameter/min_tiles = 1.0
+shader_parameter/max_tiles = 200.0
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_hve3p")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="World"]
+position = Vector2(256, 128)
+
+[node name="Level" type="Node2D" parent="World" node_paths=PackedStringArray("background", "world_boundary", "grounds", "grounds_two")]
+script = ExtResource("1_vef74")
+background = NodePath("Background")
+world_boundary = NodePath("WorldBoundary")
+grounds = NodePath("Grounds")
+grounds_two = NodePath("Grounds2")
+
+[node name="Background" parent="World/Level" instance=ExtResource("1_e2o6t")]
+
+[node name="WorldBoundary" parent="World/Level" instance=ExtResource("6_vef74")]
+
+[node name="Grounds" parent="World/Level" instance=ExtResource("5_j5wjh")]
+position = Vector2(0, 200)
+
+[node name="Grounds2" parent="World/Level" instance=ExtResource("5_j5wjh")]
+position = Vector2(512, 200)
+
+[node name="MobSpawner" parent="World/Level" node_paths=PackedStringArray("kitty") instance=ExtResource("7_vef74")]
+kitty = NodePath("../Kitty")
+
+[node name="Kitty" parent="World/Level" instance=ExtResource("7_j5wjh")]
+position = Vector2(168, 64)
+
+[node name="HUD" parent="World" instance=ExtResource("4_fc0e3")]
+
+[node name="Reticle" parent="World" instance=ExtResource("5_eow3j")]
+
+[node name="VHS" type="CanvasLayer" parent="World"]
+
+[node name="ColorRect" type="ColorRect" parent="World/VHS"]
+material = SubResource("ShaderMaterial_mfdv2")
+offset_right = 512.0
+offset_bottom = 256.0
+
+[node name="GameOverLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="DimRect" type="ColorRect" parent="GameOverLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="GameOverLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverLayer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="GameOverLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.965, 0.757, 0.467, 1)
+theme_override_font_sizes/font_size = 24
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="GameOverLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "score: 0"
+horizontal_alignment = 1
+
+[node name="HighScoreLabel" type="Label" parent="GameOverLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.965, 0.757, 0.467, 1)
+text = ""
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="GameOverLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 8)
+
+[node name="RestartButton" type="Button" parent="GameOverLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Restart"
+
+[node name="QuitButton" type="Button" parent="GameOverLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Quit"
+
+[node name="TransitionLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 10
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="TransitionLayer"]
+material = SubResource("ShaderMaterial_transition")
+offset_right = 512.0
+offset_bottom = 256.0
+
+[node name="PauseMenu" parent="." instance=ExtResource("11_pause")]
+
+[connection signal="game_over" from="World/Level/Kitty" to="." method="_on_kitty_game_over"]
+[connection signal="fall_down" from="World/Level/WorldBoundary" to="World/Level/Kitty" method="_on_world_boundary_fall_down"]
+[connection signal="pressed" from="GameOverLayer/CenterContainer/VBoxContainer/RestartButton" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="GameOverLayer/CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_pressed"]

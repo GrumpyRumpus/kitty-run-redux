@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1g4cm7jdn200"]
+
+[ext_resource type="Script" uid="uid://6tch0smw5vil" path="res://scripts/grounds.gd" id="1_0ibc6"]
+
+[node name="Grounds" type="StaticBody2D" node_paths=PackedStringArray("collision")]
+script = ExtResource("1_0ibc6")
+collision = NodePath("CollisionPolygon2D")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(0, 0, 512, 20)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+
+[node name="Polygon2D1" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(0, 32, 91.5, 26, 200, 0, 321.912, 27.6574, 448, 0, 512, 0, 512, 256, 0, 256)
+uv = PackedVector2Array(0, 32, 88, 32, 200, 16, 352, 32, 448, 24, 512, 32, 512, 256, 0, 256)
+
+[node name="Polygon2D2" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(0, 256, 0, 24, 48, 8, 128, 0, 296, 16, 448, 0, 512, 16, 512, 256)
+
+[node name="Polygon2D3" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(0, 40, 64, 0, 128, 0, 296, 32, 448, 0, 512, 0, 512, 256, 0, 256)
+uv = PackedVector2Array(0, 40, 64, 0, 128, 0, 296, 32, 448, 0, 512, 0, 512, 256, 0, 256)
+
+[node name="Polygon2D4" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(0, 24, 64, 8, 192, 0, 384, 8, 448, 8, 448, 248, 512, 256, 0, 256)
+uv = PackedVector2Array(0, 0, 256, 32, 512, 0, 512, 256, 0, 256)
+
+[node name="Polygon2D5" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(32, 248, 32, 48, 88, 32, 440, 8, 480, 0, 480, 248, 512, 256, 0, 256)
+uv = PackedVector2Array(0, 0, 256, 32, 512, 0, 512, 256, 0, 256)
+
+[node name="Polygon2D6" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(64, 248, 64, 64, 128, 0, 360, 48, 448, 32, 448, 248, 512, 256, 0, 256)
+uv = PackedVector2Array(0, 0, 256, 32, 512, 0, 512, 256, 0, 256)
+
+[node name="Polygon2D7" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(64, 248, 64, 48, 192, 56, 384, 0, 448, 32, 448, 248, 512, 256, 0, 256)
+uv = PackedVector2Array(0, 0, 256, 32, 512, 0, 512, 256, 0, 256)
+
+[node name="Polygon2D8" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(88, 248, 88, 32, 192, 0, 256, 32, 416, 40, 416, 248, 512, 256, 0, 256)
+uv = PackedVector2Array(0, 0, 256, 32, 512, 0, 512, 256, 0, 256)
+
+[node name="Polygon2D9" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(64, 248, 64, 48, 160, 16, 256, 0, 384, 0, 384, 248, 512, 256, 0, 256)
+uv = PackedVector2Array(0, 0, 256, 32, 512, 0, 512, 256, 0, 256)
+
+[node name="Polygon2D0" type="Polygon2D" parent="CollisionPolygon2D"]
+visible = false
+antialiased = true
+polygon = PackedVector2Array(64, 248, 64, 32, 192, 0, 192, 248, 352, 64, 448, 64, 512, 256, 0, 256)
+uv = PackedVector2Array(64, 248, 64, 32, 192, 0, 192, 248, 352, 64, 448, 64, 512, 256, 0, 256)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

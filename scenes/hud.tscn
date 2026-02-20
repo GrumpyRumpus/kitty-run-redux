@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://bamdlbn0v5fxh"]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_score"]
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_health"]
+font_color = Color(0.922, 0.435, 0.573, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 100.0
+offset_bottom = 23.0
+text = "score: 0"
+label_settings = SubResource("LabelSettings_score")
+
+[node name="HealthLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_top = 2.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "\u2764\u2764\u2764"
+label_settings = SubResource("LabelSettings_health")
+horizontal_alignment = 2

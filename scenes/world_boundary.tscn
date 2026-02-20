@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://c51r5oafed6on"]
+
+[ext_resource type="Script" uid="uid://boik4y8pu2a01" path="res://scripts/world_boundary.gd" id="1_viule"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_n7jsb"]
+distance = -256.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_viule"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1t0p5"]
+normal = Vector2(-1, 0)
+distance = -512.0
+
+[node name="WorldBoundary" type="Node2D"]
+script = ExtResource("1_viule")
+
+[node name="Bottom" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom"]
+shape = SubResource("WorldBoundaryShape2D_n7jsb")
+
+[node name="Left" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left"]
+shape = SubResource("WorldBoundaryShape2D_viule")
+
+[node name="Right" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right"]
+shape = SubResource("WorldBoundaryShape2D_1t0p5")
+
+[connection signal="body_entered" from="Bottom" to="." method="_on_bottom_body_entered"]
