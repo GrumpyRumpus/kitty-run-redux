@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://du5utxi0w5o8l" path="res://game.gd" id="1_hve3p"]
 [ext_resource type="Script" uid="uid://vl08s4ykleg1" path="res://scripts/level.gd" id="1_vef74"]
 [ext_resource type="PackedScene" uid="uid://bamdlbn0v5fxh" path="res://scenes/hud.tscn" id="4_fc0e3"]
-[ext_resource type="PackedScene" uid="uid://bs2b8c0f0a3ge" path="res://scenes/reticle.tscn" id="5_eow3j"]
 [ext_resource type="PackedScene" uid="uid://c1g4cm7jdn200" path="res://scenes/grounds.tscn" id="5_j5wjh"]
 [ext_resource type="PackedScene" uid="uid://c51r5oafed6on" path="res://scenes/world_boundary.tscn" id="6_vef74"]
 [ext_resource type="PackedScene" uid="uid://bpwj4hs5n35kq" path="res://scenes/kitty.tscn" id="7_j5wjh"]
@@ -63,8 +62,6 @@ kitty = NodePath("../Kitty")
 position = Vector2(168, 64)
 
 [node name="HUD" parent="World" unique_id=26939183 instance=ExtResource("4_fc0e3")]
-
-[node name="Reticle" parent="World" unique_id=684614800 instance=ExtResource("5_eow3j")]
 
 [node name="VHS" type="CanvasLayer" parent="World" unique_id=1711135163]
 

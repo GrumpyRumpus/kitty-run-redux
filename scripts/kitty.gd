@@ -30,6 +30,7 @@ var last_damage_source_pos: Vector2 = Vector2.ZERO
 @onready var dead_state: DeadState = %Dead
 
 var gravity_multiplier = 1
+var aim_direction: Vector2 = Vector2.RIGHT
 var _mouse_viewport: Vector2 = Vector2.ZERO
 
 
@@ -91,7 +92,12 @@ func _process(delta: float) -> void:
 		if Input.is_action_pressed("action"):
 			shoot_dir = global_position.direction_to(_get_world_mouse_position())
 		else:
-			shoot_dir = _get_keyboard_aim()
+			var kb_aim := _get_keyboard_aim()
+			if kb_aim != Vector2.ZERO:
+				aim_direction = kb_aim
+				shoot_dir = kb_aim
+			elif Input.is_action_pressed("shoot"):
+				shoot_dir = aim_direction
 		if shoot_dir != Vector2.ZERO:
 			var target := global_position + shoot_dir * 100.0
 			shoot_component.handle_shoot(global_position, target, true)
