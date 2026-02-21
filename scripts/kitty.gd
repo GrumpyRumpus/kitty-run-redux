@@ -6,6 +6,7 @@ var gravity: float = 980
 
 signal game_over
 signal health_changed(new_health: int)
+signal stomped
 
 const MAX_HEALTH: int = 3
 var health: int = MAX_HEALTH
@@ -30,6 +31,7 @@ var _mouse_viewport: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
+	z_index = 1
 	state_machine.init(self)
 
 
@@ -55,13 +57,35 @@ func _get_world_mouse_position() -> Vector2:
 	return get_canvas_transform().affine_inverse() * _mouse_viewport
 
 
+func _get_keyboard_aim() -> Vector2:
+	var aim := Vector2.ZERO
+	if Input.is_physical_key_pressed(KEY_J):
+		aim += Vector2.LEFT
+	if Input.is_physical_key_pressed(KEY_L):
+		aim += Vector2.RIGHT
+	if Input.is_physical_key_pressed(KEY_I):
+		aim += Vector2.UP
+	if Input.is_physical_key_pressed(KEY_K):
+		aim += Vector2.DOWN
+	if Input.is_physical_key_pressed(KEY_U):
+		aim += Vector2(-1, -1)
+	if Input.is_physical_key_pressed(KEY_O):
+		aim += Vector2(1, -1)
+	return aim.normalized() if aim != Vector2.ZERO else Vector2.ZERO
+
+
 func _process(delta: float) -> void:
 	state_machine._process(delta)
 	# shooting input
 	var current := state_machine.current_state
 	if current != hurting_state and current != dead_state:
+		var shoot_dir := Vector2.ZERO
 		if Input.is_action_pressed("action"):
-			var target := _get_world_mouse_position()
+			shoot_dir = global_position.direction_to(_get_world_mouse_position())
+		else:
+			shoot_dir = _get_keyboard_aim()
+		if shoot_dir != Vector2.ZERO:
+			var target := global_position + shoot_dir * 100.0
 			shoot_component.handle_shoot(global_position, target, true)
 
 
@@ -110,6 +134,15 @@ func _check_contact_damage() -> void:
 				collider.take_damage(collider.health)
 				velocity.y = -350
 				can_double_jump = true
+				# stomp sound (reuse jump sfx at low pitch)
+				audio_stream_player.pitch_scale = 0.6
+				audio_stream_player.play()
+				# squash-stretch
+				animated_sprite.scale = Vector2(1.4, 0.6)
+				var sq_tween := create_tween()
+				sq_tween.tween_property(animated_sprite, "scale", Vector2(0.8, 1.3), 0.08)
+				sq_tween.tween_property(animated_sprite, "scale", Vector2(1.0, 1.0), 0.08)
+				stomped.emit()
 				return
 			take_damage(1)
 			return
