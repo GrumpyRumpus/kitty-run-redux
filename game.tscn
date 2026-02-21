@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://7snpi3e2fnf3" path="res://scenes/mob_spawner.tscn" id="7_vef74"]
 [ext_resource type="Shader" uid="uid://uugfpnvc1p4n" path="res://scripts/shaders/vhs.gdshader" id="10_hve3p"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="11_pause"]
+[ext_resource type="Script" path="res://scripts/tutorial_overlay.gd" id="13_tutorial"]
 [ext_resource type="Shader" uid="uid://cgqsdrlqn5fda" path="res://scripts/shaders/pixel_transition.gdshader" id="12_transition"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mfdv2"]
@@ -95,7 +96,7 @@ alignment = 1
 
 [node name="GameOverLabel" type="Label" parent="GameOverLayer/CenterContainer/VBoxContainer" unique_id=1568957457]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.965, 0.757, 0.467, 1)
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
 theme_override_font_sizes/font_size = 24
 text = "GAME OVER"
 horizontal_alignment = 1
@@ -107,7 +108,7 @@ horizontal_alignment = 1
 
 [node name="HighScoreLabel" type="Label" parent="GameOverLayer/CenterContainer/VBoxContainer" unique_id=2110078654]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.965, 0.757, 0.467, 1)
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="GameOverLayer/CenterContainer/VBoxContainer" unique_id=164031587]
@@ -133,6 +134,9 @@ visible = false
 material = SubResource("ShaderMaterial_transition")
 offset_right = 512.0
 offset_bottom = 256.0
+
+[node name="TutorialOverlay" type="CanvasLayer" parent="."]
+script = ExtResource("13_tutorial")
 
 [node name="PauseMenu" parent="." unique_id=1058544312 instance=ExtResource("11_pause")]
 

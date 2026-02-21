@@ -50,7 +50,7 @@ offset_right = 128.0
 offset_bottom = 87.5
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.098, 0.09, 0.141, 0.5)
+color = Color(0.094, 0.094, 0.145, 0.5)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -68,7 +68,7 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.965, 0.757, 0.467, 1)
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
 theme_override_font_sizes/font_size = 42
 text = "Kitty Run"
 
@@ -93,7 +93,7 @@ text = "Exit"
 
 [node name="HighScoreLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.965, 0.757, 0.467, 1)
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
 theme_override_font_sizes/font_size = 16
 text = ""
 horizontal_alignment = 1

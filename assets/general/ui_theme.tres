@@ -1,8 +1,8 @@
 [gd_resource type="Theme" load_steps=15 format=3]
 
 [sub_resource type="StyleBoxFlat" id="btn_normal"]
-bg_color = Color(0.102, 0.165, 0.18, 1)
-border_color = Color(0.18, 0.306, 0.345, 1)
+bg_color = Color(0.118, 0.118, 0.18, 1)
+border_color = Color(0.271, 0.278, 0.353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -13,8 +13,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="btn_hover"]
-bg_color = Color(0.141, 0.227, 0.259, 1)
-border_color = Color(0.18, 0.306, 0.345, 1)
+bg_color = Color(0.192, 0.196, 0.267, 1)
+border_color = Color(0.271, 0.278, 0.353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -25,8 +25,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="btn_pressed"]
-bg_color = Color(0.071, 0.118, 0.133, 1)
-border_color = Color(0.18, 0.306, 0.345, 1)
+bg_color = Color(0.094, 0.094, 0.145, 1)
+border_color = Color(0.271, 0.278, 0.353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -37,8 +37,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="btn_disabled"]
-bg_color = Color(0.071, 0.118, 0.133, 1)
-border_color = Color(0.118, 0.188, 0.22, 1)
+bg_color = Color(0.094, 0.094, 0.145, 1)
+border_color = Color(0.192, 0.196, 0.267, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -49,8 +49,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="btn_focus"]
-bg_color = Color(0.141, 0.227, 0.259, 1)
-border_color = Color(0.29, 0.541, 0.588, 1)
+bg_color = Color(0.192, 0.196, 0.267, 1)
+border_color = Color(0.796, 0.651, 0.969, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -61,8 +61,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="tab_selected"]
-bg_color = Color(0.102, 0.165, 0.18, 1)
-border_color = Color(0.18, 0.306, 0.345, 1)
+bg_color = Color(0.118, 0.118, 0.18, 1)
+border_color = Color(0.271, 0.278, 0.353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -72,8 +72,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="tab_unselected"]
-bg_color = Color(0.078, 0.118, 0.133, 1)
-border_color = Color(0.118, 0.188, 0.22, 1)
+bg_color = Color(0.094, 0.094, 0.145, 1)
+border_color = Color(0.192, 0.196, 0.267, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -83,8 +83,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="tab_hovered"]
-bg_color = Color(0.141, 0.227, 0.259, 1)
-border_color = Color(0.18, 0.306, 0.345, 1)
+bg_color = Color(0.192, 0.196, 0.267, 1)
+border_color = Color(0.271, 0.278, 0.353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -94,8 +94,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="tab_panel"]
-bg_color = Color(0.078, 0.118, 0.133, 1)
-border_color = Color(0.18, 0.306, 0.345, 1)
+bg_color = Color(0.094, 0.094, 0.145, 1)
+border_color = Color(0.271, 0.278, 0.353, 1)
 border_width_left = 1
 border_width_right = 1
 border_width_bottom = 1
@@ -105,8 +105,8 @@ content_margin_right = 4.0
 content_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="tab_focus"]
-bg_color = Color(0.141, 0.227, 0.259, 1)
-border_color = Color(0.29, 0.541, 0.588, 1)
+bg_color = Color(0.192, 0.196, 0.267, 1)
+border_color = Color(0.796, 0.651, 0.969, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -116,8 +116,8 @@ content_margin_right = 6.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="cb_normal"]
-bg_color = Color(0.078, 0.118, 0.133, 1)
-border_color = Color(0.18, 0.306, 0.345, 1)
+bg_color = Color(0.094, 0.094, 0.145, 1)
+border_color = Color(0.271, 0.278, 0.353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -128,8 +128,8 @@ content_margin_right = 2.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="cb_hover"]
-bg_color = Color(0.102, 0.165, 0.18, 1)
-border_color = Color(0.29, 0.541, 0.588, 1)
+bg_color = Color(0.118, 0.118, 0.18, 1)
+border_color = Color(0.796, 0.651, 0.969, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -140,34 +140,34 @@ content_margin_right = 2.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="slider_style"]
-bg_color = Color(0.078, 0.118, 0.133, 1)
-border_color = Color(0.18, 0.306, 0.345, 1)
+bg_color = Color(0.094, 0.094, 0.145, 1)
+border_color = Color(0.271, 0.278, 0.353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 
 [resource]
-Button/colors/font_color = Color(0.847, 0.918, 0.91, 1)
-Button/colors/font_hover_color = Color(0.416, 0.8, 0.753, 1)
-Button/colors/font_pressed_color = Color(0.29, 0.478, 0.471, 1)
-Button/colors/font_disabled_color = Color(0.29, 0.478, 0.471, 1)
-Button/colors/font_focus_color = Color(0.416, 0.8, 0.753, 1)
+Button/colors/font_color = Color(0.804, 0.839, 0.957, 1)
+Button/colors/font_hover_color = Color(0.537, 0.863, 0.922, 1)
+Button/colors/font_pressed_color = Color(0.424, 0.439, 0.525, 1)
+Button/colors/font_disabled_color = Color(0.424, 0.439, 0.525, 1)
+Button/colors/font_focus_color = Color(0.537, 0.863, 0.922, 1)
 Button/styles/normal = SubResource("btn_normal")
 Button/styles/hover = SubResource("btn_hover")
 Button/styles/pressed = SubResource("btn_pressed")
 Button/styles/disabled = SubResource("btn_disabled")
 Button/styles/focus = SubResource("btn_focus")
-TabContainer/colors/font_selected_color = Color(0.847, 0.918, 0.91, 1)
-TabContainer/colors/font_unselected_color = Color(0.29, 0.478, 0.471, 1)
-TabContainer/colors/font_hovered_color = Color(0.416, 0.8, 0.753, 1)
+TabContainer/colors/font_selected_color = Color(0.804, 0.839, 0.957, 1)
+TabContainer/colors/font_unselected_color = Color(0.424, 0.439, 0.525, 1)
+TabContainer/colors/font_hovered_color = Color(0.537, 0.863, 0.922, 1)
 TabContainer/styles/tab_selected = SubResource("tab_selected")
 TabContainer/styles/tab_unselected = SubResource("tab_unselected")
 TabContainer/styles/tab_hovered = SubResource("tab_hovered")
 TabContainer/styles/tab_focus = SubResource("tab_focus")
 TabContainer/styles/panel = SubResource("tab_panel")
-CheckBox/colors/font_color = Color(0.847, 0.918, 0.91, 1)
-CheckBox/colors/font_hover_color = Color(0.416, 0.8, 0.753, 1)
+CheckBox/colors/font_color = Color(0.804, 0.839, 0.957, 1)
+CheckBox/colors/font_hover_color = Color(0.537, 0.863, 0.922, 1)
 CheckBox/styles/normal = SubResource("cb_normal")
 CheckBox/styles/hover = SubResource("cb_hover")
 HSlider/styles/slider = SubResource("slider_style")

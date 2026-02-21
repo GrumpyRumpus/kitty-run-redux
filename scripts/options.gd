@@ -2,6 +2,7 @@ extends Control
 
 @onready var size_option: OptionButton = $MarginContainer/VBoxContainer/TabContainer/Video/SizeOption
 @onready var vhs_checkbox: CheckBox = $MarginContainer/VBoxContainer/TabContainer/Video/VHSCheckBox
+@onready var fullscreen_checkbox: CheckBox = $MarginContainer/VBoxContainer/TabContainer/Video/FullscreenCheckBox
 @onready var sfx_slider: HSlider = $MarginContainer/VBoxContainer/TabContainer/Sound/SFXSlider
 @onready var music_slider: HSlider = $MarginContainer/VBoxContainer/TabContainer/Sound/MusicSlider
 @onready var mute_checkbox: CheckBox = $MarginContainer/VBoxContainer/TabContainer/Sound/MuteCheckBox
@@ -12,6 +13,8 @@ extends Control
 func _ready() -> void:
 	size_option.selected = Settings.window_scale - 1
 	vhs_checkbox.button_pressed = Settings.vhs_enabled
+	fullscreen_checkbox.button_pressed = Settings.fullscreen
+	size_option.disabled = Settings.fullscreen
 	sfx_slider.value = Settings.sfx_volume
 	music_slider.value = Settings.music_volume
 	mute_checkbox.button_pressed = Settings.muted
@@ -36,6 +39,11 @@ func _on_size_selected(index: int) -> void:
 
 func _on_vhs_toggled(enabled: bool) -> void:
 	Settings.vhs_enabled = enabled
+
+
+func _on_fullscreen_toggled(enabled: bool) -> void:
+	Settings.fullscreen = enabled
+	size_option.disabled = enabled
 
 
 func _on_reset_score_pressed() -> void:

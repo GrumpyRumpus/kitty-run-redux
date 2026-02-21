@@ -92,8 +92,8 @@ QOL
 
   [ ] Input rebinding
   [ ] Gamepad support (right stick aim)
-  [ ] First-run tutorial hints (double jump, stomp, shooting)
-  [ ] Fullscreen toggle in options menu
+  [x] First-run tutorial hints (double jump, stomp, shooting)
+  [x] Fullscreen toggle in options menu
 
 ============================================================
 CODE QUALITY

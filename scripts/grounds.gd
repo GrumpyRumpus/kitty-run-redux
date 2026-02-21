@@ -12,8 +12,8 @@ var vp_width: int
 
 var grass_lines: Array[Line2D] = []
 
-var ground_color := Color(0.165, 0.353, 0.353, 1)
-var grass_color := Color(0.29, 0.541, 0.502, 1)
+var ground_color := Color(0.271, 0.278, 0.353, 1)
+var grass_color := Color(0.651, 0.890, 0.631, 1)
 
 
 func _ready() -> void:

@@ -103,10 +103,86 @@ text = "CRT Filter"
 layout_mode = 2
 button_pressed = true
 
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+
+[node name="FullscreenLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="FullscreenCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+layout_mode = 2
+
+[node name="Controls" type="GridContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+columns = 2
+metadata/_tab_index = 2
+
+[node name="MoveKey" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+text = "Move"
+
+[node name="MoveVal" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+text = "A / D"
+horizontal_alignment = 2
+
+[node name="JumpKey" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+text = "Jump"
+
+[node name="JumpVal" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+text = "W"
+horizontal_alignment = 2
+
+[node name="ShootKey" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+text = "Shoot"
+
+[node name="ShootVal" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+text = "Space"
+horizontal_alignment = 2
+
+[node name="AimKey" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+text = "Aim"
+
+[node name="AimVal" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+text = "Mouse / IJKL"
+horizontal_alignment = 2
+
+[node name="SprintKey" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+text = "Sprint"
+
+[node name="SprintVal" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+text = "Shift"
+horizontal_alignment = 2
+
+[node name="PauseKey" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+text = "Pause"
+
+[node name="PauseVal" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+text = "Esc"
+horizontal_alignment = 2
+
 [node name="Data" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [node name="HighScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Data"]
 layout_mode = 2
@@ -132,4 +208,5 @@ text = "Back"
 [connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Sound/MuteCheckBox" to="." method="_on_mute_toggled"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/TabContainer/Video/SizeOption" to="." method="_on_size_selected"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Video/VHSCheckBox" to="." method="_on_vhs_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Video/FullscreenCheckBox" to="." method="_on_fullscreen_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Data/ResetScoreButton" to="." method="_on_reset_score_pressed"]

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/score_popup.gd" id="1_popup"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_popup"]
-font_color = Color(0.965, 0.757, 0.467, 1)
+font_color = Color(0.980, 0.702, 0.529, 1)
 outline_size = 1
 outline_color = Color(0, 0, 0, 1)
 

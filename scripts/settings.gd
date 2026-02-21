@@ -36,16 +36,30 @@ var muted: bool = false:
 		AudioServer.set_bus_mute(0, muted)
 		_save()
 
+var tutorial_seen: bool = false:
+	set(value):
+		tutorial_seen = value
+		_save()
+
+var fullscreen: bool = false:
+	set(value):
+		fullscreen = value
+		_apply_fullscreen()
+		_save()
+
 
 func _ready() -> void:
 	_load()
 	_apply_window_scale()
+	_apply_fullscreen()
 	_apply_bus_volume("SFX", sfx_volume)
 	_apply_bus_volume("Music", music_volume)
 	AudioServer.set_bus_mute(0, muted)
 
 
 func _apply_window_scale() -> void:
+	if fullscreen:
+		return
 	var base_w := ProjectSettings.get_setting("display/window/size/viewport_width") as int
 	var base_h := ProjectSettings.get_setting("display/window/size/viewport_height") as int
 	var win := get_window()
@@ -53,6 +67,14 @@ func _apply_window_scale() -> void:
 	# center window on screen
 	var screen_size := DisplayServer.screen_get_size()
 	win.position = (screen_size - win.size) / 2
+
+
+func _apply_fullscreen() -> void:
+	if fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		_apply_window_scale()
 
 
 func _apply_bus_volume(bus_name: String, volume: float) -> void:
@@ -71,6 +93,8 @@ func _save() -> void:
 		file.store_float(sfx_volume)
 		file.store_float(music_volume)
 		file.store_8(1 if muted else 0)
+		file.store_8(1 if tutorial_seen else 0)
+		file.store_8(1 if fullscreen else 0)
 
 
 func _load() -> void:
@@ -85,4 +109,7 @@ func _load() -> void:
 			sfx_volume = file.get_float()
 			music_volume = file.get_float()
 			muted = file.get_8() == 1
+		if file.get_position() < file.get_length():
+			tutorial_seen = file.get_8() == 1
+			fullscreen = file.get_8() == 1
 		_loading = false

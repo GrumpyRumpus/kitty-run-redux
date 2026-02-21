@@ -7,12 +7,12 @@ outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_combo"]
-font_color = Color(0.3, 0.9, 1, 1)
+font_color = Color(0.537, 0.863, 0.922, 1)
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_health"]
-font_color = Color(0.922, 0.435, 0.573, 1)
+font_color = Color(0.953, 0.545, 0.659, 1)
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
