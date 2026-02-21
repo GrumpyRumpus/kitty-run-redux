@@ -47,7 +47,7 @@ func process(delta: float) -> State:
 
 
 func process_physics(delta: float) -> State:
-	kitty.update_velocity(direction.x * move_speed, acceleration)
+	kitty.update_velocity(state_machine.direction.x * move_speed, acceleration)
 	if kitty.is_on_floor():
 		return standing_state
 	return null

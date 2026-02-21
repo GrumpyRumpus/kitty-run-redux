@@ -27,7 +27,7 @@ func handle_input(event: InputEvent) -> State:
 
 
 func process(delta: float) -> State:
-	if direction.x != 0:
+	if state_machine.direction.x != 0:
 		return running_state
 	return null
 

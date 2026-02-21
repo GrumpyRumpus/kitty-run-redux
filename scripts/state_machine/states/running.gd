@@ -41,9 +41,9 @@ func process(delta: float) -> State:
 func process_physics(delta: float) -> State:
 	if not kitty.is_on_floor():
 		return falling_state
-	if direction.x == 0:
+	if state_machine.direction.x == 0:
 		return standing_state
-	elif sign(direction.x) == sign(kitty.velocity.x) or kitty.velocity.x == 0:
+	elif sign(state_machine.direction.x) == sign(kitty.velocity.x) or kitty.velocity.x == 0:
 		current_acceleration = acceleration
 	else:
 		current_acceleration = skid_acceleration
@@ -53,5 +53,5 @@ func process_physics(delta: float) -> State:
 	else:
 		target_speed = speed
 		kitty.animated_sprite.speed_scale = 1.0
-	kitty.update_velocity(direction.x * target_speed, current_acceleration)
+	kitty.update_velocity(state_machine.direction.x * target_speed, current_acceleration)
 	return null

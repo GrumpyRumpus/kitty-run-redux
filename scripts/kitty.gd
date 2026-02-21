@@ -36,6 +36,8 @@ var _mouse_viewport: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	z_index = 1
+	floor_constant_speed = true
+	floor_snap_length = 4.0
 	state_machine.init(self)
 
 

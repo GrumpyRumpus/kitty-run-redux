@@ -1,9 +1,8 @@
 class_name State
 extends Node2D
 
-static var kitty: Kitty
-static var state_machine: StateMachine
-static var direction: Vector2
+var kitty: Kitty
+var state_machine: StateMachine
 
 @onready var standing_state: StandingState = %Standing
 @onready var running_state: RunningState = %Running

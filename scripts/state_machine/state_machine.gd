@@ -1,11 +1,9 @@
 class_name StateMachine
 extends Node2D
 
-var states: Array[State]
-var current_state: State:
-	get: return states.front()
-var previous_state: State:
-	get: return states[1] if states.size() > 1 else null
+var current_state: State
+var previous_state: State
+var direction: Vector2
 
 var kitty: Kitty
 
@@ -25,7 +23,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	current_state.direction = Vector2(
+	direction = Vector2(
 		sign(Input.get_axis("left", "right")),
 		sign(Input.get_axis("up", "down"))
 	)
@@ -38,22 +36,20 @@ func change_state(new_state: State) -> void:
 		return
 	if current_state:
 		current_state.exit()
-	states.push_front(new_state)
+	previous_state = current_state
+	current_state = new_state
 	current_state.enter()
-	states.resize(3)
 
 
 func init(kitty: Kitty) -> void:
-	states = []
 	for c in get_children():
 		if c is State:
-			states.append(c)
-	if states.size() == 0:
+			c.kitty = kitty
+			c.state_machine = self
+			c.init()
+			if current_state == null:
+				current_state = c
+	if current_state == null:
 		return
-	current_state.kitty = kitty
-	current_state.state_machine = self
-	current_state.direction = Vector2.ZERO
-	for state in states:
-		state.init()
-	change_state(current_state)
+	current_state.enter()
 	process_mode = Node.PROCESS_MODE_INHERIT

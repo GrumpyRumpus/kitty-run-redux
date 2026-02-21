@@ -7,9 +7,10 @@ GAMEPLAY
 ---- Combat ----
   [ ] Dash/slide move for dodging under swooping enemies
   [ ] More enemy variety (ground walkers, shielded flyers, chargers)
-  [ ] Combo system -- chain stomps/kills for score multipliers
+  [x] Combo system -- chain stomps/kills for score multipliers
   [ ] Boss encounters every N points (larger enemy, health bar, attack patterns)
-  [ ] Variable double-jump height -- short-hop on quick tap like first jump
+  [x] Variable double-jump height -- short-hop on quick tap like first jump
+      early release cuts velocity to 30% (jumping.gd handle_input)
   [ ] Mob AI awareness -- bias toward SHOOT when near kitty, SWOOP toward kitty X
 
 ---- Powerups ----
@@ -22,9 +23,12 @@ GAMEPLAY
   [ ] Speed boost -- temporarily increases max run speed + ground scroll
 
 ---- Difficulty ----
-  [ ] Progressive difficulty -- ground speed increases over time too
-  [ ] Ground gaps -- pits kitty must jump over (ground already tiles, remove segments)
+  [x] Progressive difficulty -- ground speed increases over time too
+      background.gd speed_multiplier compounds each frame, grounds sync via level.gd
+  [x] Ground gaps -- pits kitty must jump over (ground already tiles, remove segments)
+      switch_ground picks from 10 polygon variants, some with gaps
   [ ] Varying platform heights -- elevated platforms to jump onto
+      Y randomization exists (25px band) but no true elevated platforms yet
 
 ============================================================
 POLISH
@@ -95,10 +99,10 @@ QOL
 CODE QUALITY
 ============================================================
 
-  [ ] Replace static vars on State (kitty, state_machine, direction) with instance vars
+  [x] Replace static vars on State (kitty, state_machine, direction) with instance vars
       static vars caused the "running on start" bug already -- still a latent footgun
       pass refs through init() instead
-  [ ] Simplify state machine stack -- only keeps 3 entries via resize
+  [x] Simplify state machine stack -- only keeps 3 entries via resize
       two explicit vars (current_state, previous_state) would be clearer
   [x] Remove commented-out debug prints
   [x] Defer settings save -- _save() skipped during _load() via _loading flag
