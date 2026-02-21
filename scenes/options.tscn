@@ -97,7 +97,7 @@ layout_mode = 2
 
 [node name="VHSLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
 layout_mode = 2
-text = "VHS Filter"
+text = "CRT Filter"
 
 [node name="VHSCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
 layout_mode = 2

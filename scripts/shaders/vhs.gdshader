@@ -1,98 +1,221 @@
+// CRT Shader by Harrison Allen
+// V4
+
 shader_type canvas_item;
 
-group_uniforms Wiggle;
-uniform float wiggle : hint_range(0.0, 1.5, 0.01) = 0.03;
-uniform float wiggle_speed : hint_range(0.0, 100.0, 1.0) = 25;
-group_uniforms Smear;
-uniform float smear : hint_range(0.0, 2.0) = 1.0;
+uniform sampler2D tex: hint_screen_texture, filter_linear;
 
-uniform sampler2D Source : hint_screen_texture, filter_linear_mipmap, repeat_disable;
+uniform int mask_type : hint_enum(
+	"Dots:1",
+	"Aperture Grille:2",
+	"Wide Grille:3",
+	"Wide Soft Grille:4",
+	"Slot Mask:5",
+	"Null:0") = 1;
 
-group_uniforms Blur;
-uniform int blur_samples : hint_range(3, 15, 1) = 15;
+uniform float curve : hint_range(0.0, 0.5) = 0.0;
+uniform float sharpness : hint_range(0.5, 1.0) = 0.6666666666666666666666666667;
+uniform float color_offset : hint_range(-0.5, 0.5) = 0.0;
+uniform float mask_brightness : hint_range(0, 1) = 1.0;
+uniform float scanline_brightness : hint_range(0.5, 1.0) = 0.95;
+uniform float min_scanline_thickness : hint_range(0.25, 1.0) = 0.9;
+uniform float aspect : hint_range(0.5, 1.0) = 0.5;
+uniform float wobble_strength : hint_range(0.0, 1.0) = 0.0;
 
-float onOff(float a, float b, float c, float framecount) {
-    return step(c, sin((framecount * 0.001) + a * cos((framecount * 0.001) * b)));
+varying flat float wobble;
+
+void vertex()
+{
+	wobble = cos(TIME * TAU * 15.0) * wobble_strength / 8192.0;
 }
 
-vec2 jumpy(vec2 uv, float framecount) {
-    vec2 look = uv;
-    float window = 1.0 / (1.0 + 80.0 * (look.y - mod(framecount / 4.0, 1.0)) * (look.y - mod(framecount / 4.0, 1.0)));
-    look.x += 0.05 * sin(look.y * 10.0 + framecount) / 20.0 * onOff(4.0, 4.0, 0.3, framecount) * (0.5 + cos(framecount * 20.0)) * window;
-    float vShift = (0.1 * wiggle) * 0.4 * onOff(2.0, 3.0, 0.9, framecount) * (sin(framecount) * sin(framecount * 20.0) + (0.5 + 0.1 * sin(framecount * 200.0) * cos(framecount)));
-    look.y = mod(look.y - 0.01 * vShift, 1.0);
-    return look;
+vec2 warp(vec2 uv, float _aspect, float _curve)
+{
+	uv -= 0.5;
+	uv.x /= _aspect;
+	float warping = dot(uv, uv) * _curve;
+	warping -= _curve * 0.25;
+	uv /= 1.0 - warping;
+	uv.x *= _aspect;
+	uv += 0.5;
+	return uv;
 }
 
-vec2 Circle(float Start, float Points, float Point) {
-    float Rad = (3.141592 * 2.0 * (1.0 / Points)) * (Point + Start);
-    return vec2(-(.3 + Rad), cos(Rad));
+vec3 linear_to_srgb(vec3 col)
+{
+	return mix(
+		(pow(col, vec3(1.0 / 2.4)) * 1.055) - 0.055,
+		col * 12.92,
+		lessThan(col, vec3(0.0031318))
+	);
 }
 
-vec3 rgb2yiq(vec3 c) {
-    return vec3(
-        (0.2989 * c.x + 0.5959 * c.y + 0.2115 * c.z),
-        (0.5870 * c.x - 0.2744 * c.y - 0.5229 * c.z),
-        (0.1140 * c.x - 0.3216 * c.y + 0.3114 * c.z)
-    );
+vec3 srgb_to_linear(vec3 col)
+{
+	return mix(
+		pow((col + 0.055) / 1.055, vec3(2.4)),
+		col / 12.92,
+		lessThan(col, vec3(0.04045))
+	);
 }
 
-vec3 yiq2rgb(vec3 c) {
-    return vec3(
-        (1.0 * c.x + 1.0 * c.y + 1.0 * c.z),
-        (0.956 * c.x - 0.2720 * c.y - 1.1060 * c.z),
-        (0.6210 * c.x - 0.6474 * c.y + 1.7046 * c.z)
-    );
+vec3 scanlines(vec2 uv)
+{
+	uv *= vec2(textureSize(tex, 0));
+
+	int y = int(uv.y + 0.5) - 1;
+	float x = floor(uv.x);
+
+	float ax = x - 2.0;
+	float bx = x - 1.0;
+	float cx = x;
+	float dx = x + 1.0;
+	float ex = x + 2.0;
+
+	vec3 upper_a = texelFetch(tex, ivec2(int(ax), y), 0).rgb;
+	vec3 upper_b = texelFetch(tex, ivec2(int(bx), y), 0).rgb;
+	vec3 upper_c = texelFetch(tex, ivec2(int(cx), y), 0).rgb;
+	vec3 upper_d = texelFetch(tex, ivec2(int(dx), y), 0).rgb;
+	vec3 upper_e = texelFetch(tex, ivec2(int(ex), y), 0).rgb;
+
+	y += 1;
+
+	vec3 lower_a = texelFetch(tex, ivec2(int(ax), y), 0).rgb;
+	vec3 lower_b = texelFetch(tex, ivec2(int(bx), y), 0).rgb;
+	vec3 lower_c = texelFetch(tex, ivec2(int(cx), y), 0).rgb;
+	vec3 lower_d = texelFetch(tex, ivec2(int(dx), y), 0).rgb;
+	vec3 lower_e = texelFetch(tex, ivec2(int(ex), y), 0).rgb;
+
+	upper_a = srgb_to_linear(upper_a);
+	upper_b = srgb_to_linear(upper_b);
+	upper_c = srgb_to_linear(upper_c);
+	upper_d = srgb_to_linear(upper_d);
+	upper_e = srgb_to_linear(upper_e);
+
+	lower_a = srgb_to_linear(lower_a);
+	lower_b = srgb_to_linear(lower_b);
+	lower_c = srgb_to_linear(lower_c);
+	lower_d = srgb_to_linear(lower_d);
+	lower_e = srgb_to_linear(lower_e);
+
+	vec3 beam = vec3(uv.x - 0.5);
+	beam.r -= color_offset;
+	beam.b += color_offset;
+
+	vec3 weight_a = smoothstep(1, 0, (beam - ax) * sharpness);
+	vec3 weight_b = smoothstep(1, 0, (beam - bx) * sharpness);
+	vec3 weight_c = smoothstep(1, 0, abs(beam - cx) * sharpness);
+	vec3 weight_d = smoothstep(1, 0, (dx - beam) * sharpness);
+	vec3 weight_e = smoothstep(1, 0, (ex - beam) * sharpness);
+
+	vec3 upper_col = vec3(
+		upper_a * weight_a +
+		upper_b * weight_b +
+		upper_c * weight_c +
+		upper_d * weight_d +
+		upper_e * weight_e
+	);
+
+	vec3 lower_col = vec3(
+		lower_a * weight_a +
+		lower_b * weight_b +
+		lower_c * weight_c +
+		lower_d * weight_d +
+		lower_e * weight_e
+	);
+
+	vec3 weight_scaler = vec3(1.0) / (weight_a + weight_b + weight_c + weight_d + weight_e);
+
+	upper_col *= weight_scaler;
+	lower_col *= weight_scaler;
+
+	upper_col *= scanline_brightness;
+	lower_col *= scanline_brightness;
+
+	vec3 upper_thickness = mix(vec3(min_scanline_thickness), vec3(1.0), upper_col);
+	vec3 lower_thickness = mix(vec3(min_scanline_thickness), vec3(1.0), lower_col);
+
+	float sawtooth = (uv.y + 0.5) - float(y);
+
+	vec3 upper_line = vec3(sawtooth) / upper_thickness;
+	upper_line = smoothstep(1.0, 0.0, upper_line);
+
+	vec3 lower_line = vec3(1.0 - sawtooth) / lower_thickness;
+	lower_line = smoothstep(1.0, 0.0, lower_line);
+
+	upper_line *= upper_col / upper_thickness;
+	lower_line *= lower_col / lower_thickness;
+
+	return upper_line + lower_line;
 }
 
-vec3 Blur(vec2 uv, float d, int samples) {
-    vec3 sum = vec3(0.0);
-    float W = 1.0 / float(samples);
-    for (int i = 0; i < samples; ++i) {
-        float t = (sin(TIME * 5.0 + uv.y * 5.0)) / 10.0;
+vec4 generate_mask(vec2 fragcoord)
+{
+	switch (mask_type)
+	{
+		case 1: // Dots
+			const vec3 pattern[] = {vec3(1,0,0), vec3(0,1,0), vec3(0,0,1), vec3(0,0,0)};
+			ivec2 icoords = ivec2(fragcoord);
+			return vec4(pattern[(icoords.y * 2 + icoords.x) % 4], 0.25);
 
-        t = 0.0;
-        vec2 PixelOffset = vec2(d + 0.0005 * t, 0);
+		case 2: // Grille
+			const vec3 pattern[] = {vec3(0,1,0), vec3(1,0,1)};
+			return vec4(pattern[int(fragcoord.x) % 2], 0.5);
 
-        float Start = 2.0 / float(samples);
-        vec2 Scale = 0.66 * 4.0 * 2.0 * PixelOffset.xy;
+		case 3: // Wide grille
+			const vec3 pattern[] = {
+				vec3(1,0,0), vec3(0,1,0), vec3(0,0,1), vec3(0,0,0)};
+			return vec4(pattern[int(fragcoord.x) % 4], 0.25);
 
-        vec3 N = texture(Source, uv + Circle(Start, float(samples), float(i)) * Scale).rgb;
-        sum += N * W;
-    }
-    return sum;
+		case 4: // Grille wide soft
+			const vec3 pattern[] = {
+				vec3(1.0,0.125,0.0),
+				vec3(0.125,1.0,0.125),
+				vec3(0.0,0.125,1.0),
+				vec3(0.125,0.0,0.125)};
+			return vec4(pattern[int(fragcoord.x) % 4], 0.3125);
+
+		case 5: // Slotmask
+			const vec3 pattern[] = {
+				vec3(1,0,1), vec3(0,1,0), vec3(1,0,1), vec3(0,1,0),
+				vec3(0,0,1), vec3(0,1,0), vec3(1,0,0), vec3(0,0,0),
+				vec3(1,0,1), vec3(0,1,0), vec3(1,0,1), vec3(0,1,0),
+				vec3(1,0,0), vec3(0,0,0), vec3(0,0,1), vec3(0,1,0)
+			};
+			ivec2 icoords = ivec2(fragcoord) % 4;
+			return vec4(pattern[icoords.y * 4 + icoords.x], 0.375);
+
+		default:
+			return vec4(0.5);
+	}
 }
 
-void fragment() {
-    vec2 uv = UV;
+vec3 mask(vec3 linear_color, vec2 fragcoord)
+{
+	vec4 mask = generate_mask(fragcoord);
 
-    float d=0.1-round(mod(TIME/3.0,1.0))*.1;;
-    uv = jumpy(uv, mod(TIME * wiggle_speed, 7.0));
+	linear_color *= mix(mask.w, 1.0, mask_brightness);
 
-    float s = 0.0001 * -d + 0.0001 * wiggle *(sin(TIME * wiggle_speed));
-    float e = min(.30,pow(max(0.0,cos(uv.y*4.0+.3)-.75)*(s+0.5)*1.0,3.0))*25.0;
-    float r = (250.0*(2.0*s));
-    uv.x += abs(r*pow(min(.003,(-uv.y+(.01*mod(TIME, 5.0))))*3.0,2.0)) * wiggle;
+	vec3 target_color = linear_color / mask.w;
+	vec3 primary_col = clamp(target_color, 0.0, 1.0);
 
-    d = 0.051+abs(sin(s/4.0));
-    float c = max(0.0001,.002*d) * smear;
-    vec4 final;
+	vec3 highlights = target_color - primary_col;
+	highlights /= 1.0 / mask.w - 1.0;
 
-    final.rgb = Blur(uv, c + c * uv.x, blur_samples);
-    float y = rgb2yiq(final.rgb).r;
+	primary_col *= mask.rgb;
+	primary_col += highlights * (1.0 - mask.rgb);
 
-    uv.x += 0.01 * d;
-    c *= 6.0;
-    final.rgb = Blur(uv, c, blur_samples);
-    float i = rgb2yiq(final.rgb).g;
+	return primary_col;
+}
 
-    uv.x += 0.005 * d;
-    c *= 2.50;
-    final.rgb = Blur(uv, c, blur_samples);
-    float q = rgb2yiq(final.rgb).b;
-    final.rgb = yiq2rgb(vec3(y, i, q)) - pow(s + e * 2.0, 3.0);
+void fragment()
+{
+	vec2 warped_coords = warp(UV, aspect, curve);
+	warped_coords.x += wobble;
 
-    final.a = 1.0;
+	vec3 col = scanlines(warped_coords);
+	col = mask(col, FRAGCOORD.xy);
+	col = linear_to_srgb(col);
 
-    COLOR = final;
+	COLOR.rgb = col;
 }

@@ -7,10 +7,15 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vhs"]
 shader = ExtResource("4_vhs")
-shader_parameter/wiggle = 0.03
-shader_parameter/wiggle_speed = 25.0
-shader_parameter/smear = 1.0
-shader_parameter/blur_samples = 15
+shader_parameter/mask_type = 1
+shader_parameter/curve = 0.05
+shader_parameter/sharpness = 0.667
+shader_parameter/color_offset = 0.1
+shader_parameter/mask_brightness = 1.0
+shader_parameter/scanline_brightness = 0.95
+shader_parameter/min_scanline_thickness = 0.9
+shader_parameter/aspect = 0.5
+shader_parameter/wobble_strength = 0.0
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
