@@ -20,14 +20,12 @@ func init() -> void:
 
 
 func enter() -> void:
-	#print("entered: ", self.name)
 	current_acceleration = acceleration
 	target_speed = speed
 	kitty.animated_sprite.play("running")
 	
 
 func exit() -> void:
-	#print("exited: ", self.name)
 	kitty.animated_sprite.speed_scale = 1.0
 
 func handle_input(event: InputEvent) -> State:

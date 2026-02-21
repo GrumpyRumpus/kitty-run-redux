@@ -14,12 +14,10 @@ func init() -> void:
 
 
 func enter() -> void:
-	#print("entered: ", self.name)
 	kitty.animated_sprite.play("running")
 
 
 func exit() -> void:
-	#print("exited: ", self.name)
 	pass
 
 func handle_input(event: InputEvent) -> State:

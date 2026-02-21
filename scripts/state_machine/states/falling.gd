@@ -20,7 +20,6 @@ func init() -> void:
 
 
 func enter() -> void:
-	#print("entered: ", self.name)
 	kitty.animated_sprite.play("falling")
 	move_speed = maxf(base_move_speed, abs(kitty.velocity.x))
 	kitty.gravity_multiplier = fall_gravity_multiplier
@@ -31,7 +30,6 @@ func enter() -> void:
 
 func exit() -> void:
 	kitty.gravity_multiplier = 1.0
-	#print("exited: ", self.name)
 
 
 func handle_input(event: InputEvent) -> State:
@@ -49,7 +47,6 @@ func process(delta: float) -> State:
 
 
 func process_physics(delta: float) -> State:
-	#coyote_timer -= delta
 	kitty.update_velocity(direction.x * move_speed, acceleration)
 	if kitty.is_on_floor():
 		return standing_state

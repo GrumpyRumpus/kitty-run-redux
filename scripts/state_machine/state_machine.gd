@@ -36,15 +36,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func change_state(new_state: State) -> void:
 	if new_state == null:
 		return
-	#if new_state == current_state:
-	#	print("Already in state: ", new_state)
-	#	return
 	if current_state:
 		current_state.exit()
 	states.push_front(new_state)
 	current_state.enter()
 	states.resize(3)
-	#print(states)
 
 
 func init(kitty: Kitty) -> void:

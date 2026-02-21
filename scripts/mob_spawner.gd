@@ -24,7 +24,7 @@ func _on_mob_spawn_timer_timeout() -> void:
 	var mob: Mob = mob_scene.instantiate()
 	mob.target = kitty
 	var mob_start_x: int = [-10, vp_width + 10].pick_random()
-	var mob_start_y: int = randi_range(vp_height / 5, vp_height / 5 + 50)
+	var mob_start_y: int = randi_range(vp_height / 8, vp_height / 3)
 	mob.position = Vector2i(mob_start_x, mob_start_y)
 	# relay kill score to game
 	var game = get_tree().current_scene

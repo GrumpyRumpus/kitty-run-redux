@@ -4,6 +4,8 @@ signal vhs_changed(enabled: bool)
 
 const SAVE_PATH := "user://settings.dat"
 
+var _loading: bool = false
+
 var vhs_enabled: bool = true:
 	set(value):
 		vhs_enabled = value
@@ -60,6 +62,8 @@ func _apply_bus_volume(bus_name: String, volume: float) -> void:
 
 
 func _save() -> void:
+	if _loading:
+		return
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
 		file.store_8(1 if vhs_enabled else 0)
@@ -74,9 +78,11 @@ func _load() -> void:
 		return
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file:
+		_loading = true
 		vhs_enabled = file.get_8() == 1
 		window_scale = file.get_8()
 		if file.get_position() < file.get_length():
 			sfx_volume = file.get_float()
 			music_volume = file.get_float()
 			muted = file.get_8() == 1
+		_loading = false

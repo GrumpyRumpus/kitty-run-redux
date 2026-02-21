@@ -28,7 +28,6 @@ func enter() -> void:
 
 
 func exit() -> void:
-	#print("exited: ", self.name)
 	pass
 
 

@@ -10,6 +10,10 @@ var is_friendly: bool = false
 func aim(origin: Vector2, target: Vector2) -> void:
 	direction = origin.direction_to(target)
 	rotation = (target - origin).angle()
+	if is_friendly:
+		z_index = -1
+	else:
+		modulate = Color(1.0, 0.3, 0.3)
 
 
 func _process(delta: float) -> void:
@@ -17,7 +21,7 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.name.begins_with("Ground"):
+	if body is Grounds:
 		queue_free()
 		return
 	if is_friendly and body is Mob:
