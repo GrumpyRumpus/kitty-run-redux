@@ -26,6 +26,7 @@ var can_double_jump: bool = true
 @onready var dead_state: DeadState = %Dead
 
 var gravity_multiplier = 1
+var _mouse_viewport: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -45,13 +46,22 @@ func _physics_process(delta: float) -> void:
 	_check_contact_damage()
 
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouse:
+		_mouse_viewport = event.position
+
+
+func _get_world_mouse_position() -> Vector2:
+	return get_canvas_transform().affine_inverse() * _mouse_viewport
+
+
 func _process(delta: float) -> void:
 	state_machine._process(delta)
 	# shooting input
 	var current := state_machine.current_state
 	if current != hurting_state and current != dead_state:
 		if Input.is_action_pressed("action"):
-			var target := get_global_mouse_position()
+			var target := _get_world_mouse_position()
 			shoot_component.handle_shoot(global_position, target, true)
 
 

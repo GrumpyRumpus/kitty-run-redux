@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
 	match state:
 		States.FLAP:
 			var flap_path: PathFollow2D
-			if position.x > get_viewport_rect().size.x / 2:
+			if global_position.x > get_viewport_rect().size.x / 2:
 				flap_path = flap_path_left
 			else:
 				flap_path = flap_path_right
@@ -39,7 +39,7 @@ func _physics_process(delta: float) -> void:
 			if follow_path(delta, spiral_path) > 0.99:
 				state = [States.SWOOP, States.SHOOT].pick_random()
 		States.SHOOT:
-			if shoot_component.bullet_timer.time_left == 0:
+			if shoot_component.bullet_timer.is_stopped():
 				state = [States.SWOOP, States.SPIRAL].pick_random()
 			shoot_component.handle_shoot(global_position, target.global_position, true)
 
@@ -81,7 +81,12 @@ func _die() -> void:
 	# spawn death particles
 	var particles := DEATH_PARTICLES.instantiate()
 	particles.global_position = global_position
-	get_tree().current_scene.get_node("World/Level").add_child(particles)
+	var level := get_tree().current_scene.get_node_or_null("World/Level")
+	if level:
+		level.add_child(particles)
+	else:
+		particles.queue_free()
+		return
 	particles.emitting = true
 	# auto-free particles after lifetime
 	get_tree().create_timer(particles.lifetime + 0.1).timeout.connect(particles.queue_free)

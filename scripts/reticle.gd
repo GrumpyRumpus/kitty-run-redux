@@ -9,4 +9,4 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var cursor_frame = self.sprite_frames.get_frame_texture(self.animation, self.frame)
 	Input.set_custom_mouse_cursor(cursor_frame, Input.CURSOR_ARROW, 
-	Vector2i(cursor_frame.get_height() / 2, cursor_frame.get_width() / 2))
+	Vector2i(cursor_frame.get_width() / 2, cursor_frame.get_height() / 2))

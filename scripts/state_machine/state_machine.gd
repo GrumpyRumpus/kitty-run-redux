@@ -5,7 +5,7 @@ var states: Array[State]
 var current_state: State:
 	get: return states.front()
 var previous_state: State:
-	get: return states[1]
+	get: return states[1] if states.size() > 1 else null
 
 var kitty: Kitty
 
@@ -56,6 +56,7 @@ func init(kitty: Kitty) -> void:
 		return
 	current_state.kitty = kitty
 	current_state.state_machine = self
+	current_state.direction = Vector2.ZERO
 	for state in states:
 		state.init()
 	change_state(current_state)
