@@ -21,6 +21,11 @@ func get_high_score() -> int:
 	return best
 
 
+func reset() -> void:
+	best = 0
+	_save()
+
+
 func _save() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:

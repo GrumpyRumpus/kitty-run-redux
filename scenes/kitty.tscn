@@ -146,6 +146,7 @@ shape = SubResource("CapsuleShape2D_yoi6o")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("27_jump")
+volume_db = -14.0
 bus = &"SFX"
 
 [node name="StateMachine" type="Node2D" parent="."]

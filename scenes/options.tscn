@@ -103,6 +103,26 @@ text = "CRT Filter"
 layout_mode = 2
 button_pressed = true
 
+[node name="Data" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="HighScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Data"]
+layout_mode = 2
+text = "High Score"
+
+[node name="HighScoreValue" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Data"]
+layout_mode = 2
+text = "0"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/TabContainer/Data"]
+layout_mode = 2
+
+[node name="ResetScoreButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Data"]
+layout_mode = 2
+text = "Reset Score"
+
 [node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Back"
@@ -112,3 +132,4 @@ text = "Back"
 [connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Sound/MuteCheckBox" to="." method="_on_mute_toggled"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/TabContainer/Video/SizeOption" to="." method="_on_size_selected"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Video/VHSCheckBox" to="." method="_on_vhs_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Data/ResetScoreButton" to="." method="_on_reset_score_pressed"]

@@ -17,11 +17,12 @@ func init() -> void:
 
 
 func enter() -> void:
-	#print("entered: ", self.name)
 	kitty.animated_sprite.play("jumping")
+	var is_double_jump := not kitty.is_on_floor()
+	kitty.audio_stream_player.pitch_scale = 1.4 if is_double_jump else 1.0
 	kitty.audio_stream_player.play()
 	kitty.velocity.y = -jump_velocity
-	if kitty.is_on_floor():
+	if not is_double_jump:
 		kitty.can_double_jump = true
 	move_speed = maxf(base_move_speed, abs(kitty.velocity.x))
 
