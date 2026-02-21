@@ -11,7 +11,11 @@ var timer: float = 0.0
 
 func enter() -> void:
 	kitty.animated_sprite.play("hurting")
-	var knockback_dir := -1.0 if kitty.velocity.x >= 0 else 1.0
+	var knockback_dir := 1.0
+	if kitty.last_damage_source_pos != Vector2.ZERO:
+		knockback_dir = sign(kitty.global_position.x - kitty.last_damage_source_pos.x)
+	if knockback_dir == 0.0:
+		knockback_dir = -1.0
 	kitty.velocity.x = knockback_dir * KNOCKBACK_X
 	kitty.velocity.y = KNOCKBACK_Y
 	kitty.start_invincibility(1.0)

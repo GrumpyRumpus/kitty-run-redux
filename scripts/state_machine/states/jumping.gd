@@ -22,7 +22,9 @@ func enter() -> void:
 	kitty.audio_stream_player.pitch_scale = 1.4 if is_double_jump else 1.0
 	kitty.audio_stream_player.play()
 	kitty.velocity.y = -jump_velocity
-	if not is_double_jump:
+	if is_double_jump:
+		kitty._spawn_dust_puff()
+	else:
 		kitty.can_double_jump = true
 	move_speed = maxf(base_move_speed, abs(kitty.velocity.x))
 

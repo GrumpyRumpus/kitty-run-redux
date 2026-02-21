@@ -9,9 +9,12 @@ signal health_changed(new_health: int)
 signal stomped
 
 const MAX_HEALTH: int = 3
+const DUST_PUFF := preload("res://scenes/dust_puff.tscn")
+
 var health: int = MAX_HEALTH
 var is_invincible: bool = false
 var can_double_jump: bool = true
+var last_damage_source_pos: Vector2 = Vector2.ZERO
 
 @export_group("Nodes")
 @export var animated_sprite: AnimatedSprite2D
@@ -45,6 +48,11 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	if not was_on_floor and is_on_floor():
 		velocity.x = 0
+		# landing squash
+		animated_sprite.scale = Vector2(1.2, 0.85)
+		var land_tween := create_tween()
+		land_tween.tween_property(animated_sprite, "scale", Vector2(1.0, 1.0), 0.1)
+		_spawn_dust_puff()
 	_check_contact_damage()
 
 
@@ -97,9 +105,10 @@ func update_velocity(_velocity: float, _acceleration: float) -> void:
 	velocity.x = move_toward(velocity.x, _velocity, _acceleration)
 
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, source_pos: Vector2 = Vector2.ZERO) -> void:
 	if is_invincible or health <= 0:
 		return
+	last_damage_source_pos = source_pos
 	health -= amount
 	health_changed.emit(health)
 	if health <= 0:
@@ -144,12 +153,20 @@ func _check_contact_damage() -> void:
 				sq_tween.tween_property(animated_sprite, "scale", Vector2(1.0, 1.0), 0.08)
 				stomped.emit()
 				return
-			take_damage(1)
+			take_damage(1, collider.global_position)
 			return
 
 
 func die() -> void:
 	game_over.emit()
+
+
+func _spawn_dust_puff() -> void:
+	var puff := DUST_PUFF.instantiate()
+	puff.global_position = global_position + Vector2(0, 8)
+	puff.emitting = true
+	get_parent().add_child(puff)
+	get_tree().create_timer(puff.lifetime + 0.1).timeout.connect(puff.queue_free)
 
 
 func _on_world_boundary_fall_down() -> void:

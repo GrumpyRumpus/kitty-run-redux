@@ -31,26 +31,24 @@ POLISH
 ============================================================
 
 ---- Stomp Juice ----
-  [ ] Screen shake on stomp (reuse game._screen_shake)
-  [ ] Hitstop/freeze frame on stomp (~50ms physics pause for impact weight)
-  [ ] Squash-stretch on kitty sprite -- squish wide on contact, stretch tall on bounce
-  [ ] Stomp sound effect (currently silent)
-  [ ] Wire stomp kills to add_kill_score for score popup
+  [x] Screen shake on stomp (reuse game._screen_shake)
+  [x] Hitstop/freeze frame on stomp (~50ms physics pause for impact weight)
+  [x] Squash-stretch on kitty sprite -- squish wide on contact, stretch tall on bounce
+  [x] Stomp sound effect (currently silent)
+  [x] Wire stomp kills to add_kill_score for score popup
       mob_killed signal should fire from take_damage(collider.health) path -- verify
 
 ---- Hit Feedback ----
-  [ ] White flash on mob damage -- current tween to Color.WHITE is a no-op
-      needs a shader uniform (flash_amount) or modulate trick, not just sprite.modulate
-  [ ] Bullet impact particles (enemies + ground)
+  [x] White flash on mob damage -- shader uniform (flash_amount) on sprite material
+  [x] Bullet impact particles (enemies + ground)
   [x] Draw kitty bullets on a layer below kitty so they don't overlap the sprite
   [x] Distinguish enemy bullets visually -- tint red or different sprite
   [x] Replace string-based collision in bullet.gd
       body.name.begins_with("Ground") -> body is Grounds
 
 ---- Movement Feel ----
-  [ ] Landing feedback -- sprite squash (scale.y 0.8 for ~0.05s), dust puff, sound
-      kitty.gd:44 zeros velocity on land but has no visual/audio response
-  [ ] Double jump visual (puff/trail)
+  [x] Landing feedback -- sprite squash + dust puff on land
+  [x] Double jump visual (dust puff on second jump)
   [ ] Death animation -- slow-mo, zoom, sound
 
 ---- Spawning ----
@@ -106,6 +104,4 @@ CODE QUALITY
   [x] Defer settings save -- _save() skipped during _load() via _loading flag
   [x] Replace string-based collision in bullet.gd
       moved to Hit Feedback section above
-  [ ] Fix hurting knockback direction -- currently based on velocity, not damage source
-      standing still + hit from left = knocked toward enemy (velocity.x == 0 -> knockback -1)
-      pass enemy position into hurting state for correct directional knockback
+  [x] Fix hurting knockback direction -- now based on damage source position, not velocity

@@ -4,6 +4,7 @@ extends AnimatableBody2D
 signal mob_killed(pos: Vector2)
 
 const DEATH_PARTICLES := preload("res://scenes/death_particles.tscn")
+const FLASH_SHADER := preload("res://shaders/flash.gdshader")
 
 @export var flap_path_left: PathFollow2D
 @export var flap_path_right: PathFollow2D
@@ -18,6 +19,11 @@ enum States {FLAP, SWOOP, SPIRAL, SHOOT}
 var state: States = States.FLAP
 var health: int = 3
 var is_dead: bool = false
+
+
+func _ready() -> void:
+	sprite.material = ShaderMaterial.new()
+	sprite.material.shader = FLASH_SHADER
 
 
 func _physics_process(delta: float) -> void:
@@ -68,9 +74,9 @@ func take_damage(amount: int) -> void:
 		_die()
 	else:
 		sprite.play("hurt")
-		sprite.modulate = Color(3, 3, 3)
+		sprite.material.set_shader_parameter("flash_amount", 1.0)
 		var tween := create_tween()
-		tween.tween_property(sprite, "modulate", Color.WHITE, 0.12)
+		tween.tween_property(sprite.material, "shader_parameter/flash_amount", 0.0, 0.12)
 		await tween.finished
 		if not is_dead:
 			sprite.play("flap")
