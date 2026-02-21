@@ -68,8 +68,9 @@ func take_damage(amount: int) -> void:
 		_die()
 	else:
 		sprite.play("hurt")
+		sprite.modulate = Color(3, 3, 3)
 		var tween := create_tween()
-		tween.tween_property(sprite, "modulate", Color.WHITE, 0.15)
+		tween.tween_property(sprite, "modulate", Color.WHITE, 0.12)
 		await tween.finished
 		if not is_dead:
 			sprite.play("flap")

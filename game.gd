@@ -29,6 +29,7 @@ func _ready() -> void:
 	hud.update_score(score)
 	hud.update_health(kitty.health)
 	kitty.health_changed.connect(_on_kitty_health_changed)
+	kitty.stomped.connect(_on_kitty_stomped)
 	# game_over is wired in game.tscn -- no duplicate connect needed
 	# backup fall_down connection in case .tscn wiring is missing
 	var wb = $World/Level/WorldBoundary
@@ -67,6 +68,15 @@ func add_kill_score(pos: Vector2) -> void:
 	var popup := SCORE_POPUP.instantiate()
 	popup.position = pos
 	$World/Level.add_child(popup)
+
+
+func _on_kitty_stomped() -> void:
+	_screen_shake(6.0, 0.15)
+	# hitstop -- brief time freeze for impact
+	Engine.time_scale = 0.05
+	get_tree().create_timer(0.05, true, false, true).timeout.connect(
+		func(): Engine.time_scale = 1.0
+	)
 
 
 func _on_kitty_health_changed(new_health: int) -> void:
