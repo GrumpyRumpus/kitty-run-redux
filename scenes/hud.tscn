@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bamdlbn0v5fxh"]
+[gd_scene load_steps=5 format=3 uid="uid://bamdlbn0v5fxh"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_score"]
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_combo"]
+font_color = Color(0.3, 0.9, 1, 1)
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
@@ -21,6 +26,14 @@ offset_right = 100.0
 offset_bottom = 23.0
 text = "score: 0"
 label_settings = SubResource("LabelSettings_score")
+
+[node name="ComboLabel" type="Label" parent="."]
+offset_left = 4.0
+offset_top = 22.0
+offset_right = 60.0
+offset_bottom = 43.0
+visible = false
+label_settings = SubResource("LabelSettings_combo")
 
 [node name="HealthLabel" type="Label" parent="."]
 anchors_preset = 1

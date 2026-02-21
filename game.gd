@@ -15,9 +15,14 @@ const SCORE_POPUP := preload("res://scenes/score_popup.tscn")
 @onready var transition_layer: CanvasLayer = $TransitionLayer
 @onready var transition_rect: ColorRect = $TransitionLayer/ColorRect
 
+const COMBO_WINDOW := 3.0
+const MAX_COMBO := 10
+
 var score: int = 0
 var score_tick: float = 0.0
 var is_game_over: bool = false
+var combo_count: int = 0
+var combo_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -56,18 +61,32 @@ func _process(delta: float) -> void:
 		score_tick -= 1.0
 		score += 1
 		hud.update_score(score)
+	# combo timer
+	if combo_timer > 0.0:
+		combo_timer -= delta
+		if combo_timer <= 0.0:
+			_reset_combo()
 	# difficulty scaling -- spawn interval 5s -> 2s over 500 points
 	var interval := lerpf(5.0, 2.0, clampf(float(score) / 500.0, 0.0, 1.0))
 	mob_spawner.set_spawn_interval(interval)
 
 
 func add_kill_score(pos: Vector2) -> void:
-	score += 1
+	combo_count = mini(combo_count + 1, MAX_COMBO)
+	combo_timer = COMBO_WINDOW
+	score += combo_count
 	hud.update_score(score)
-	# spawn score popup at kill position
+	hud.update_combo(combo_count)
 	var popup := SCORE_POPUP.instantiate()
 	popup.position = pos
+	popup.set_value(combo_count)
 	$World/Level.add_child(popup)
+
+
+func _reset_combo() -> void:
+	combo_count = 0
+	combo_timer = 0.0
+	hud.update_combo(0)
 
 
 func _on_kitty_stomped() -> void:
@@ -82,6 +101,7 @@ func _on_kitty_stomped() -> void:
 func _on_kitty_health_changed(new_health: int) -> void:
 	hud.update_health(new_health)
 	_screen_shake(4.0, 0.2)
+	_reset_combo()
 
 
 func _on_kitty_game_over() -> void:

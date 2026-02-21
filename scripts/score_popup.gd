@@ -4,6 +4,10 @@ const RISE_DISTANCE := 24.0
 const DURATION := 0.6
 
 
+func set_value(amount: int) -> void:
+	text = "+%d" % amount
+
+
 func _ready() -> void:
 	var tween := create_tween()
 	tween.set_parallel(true)
