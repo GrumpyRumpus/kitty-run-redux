@@ -23,12 +23,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+
       - name: Upload to itch.io
-        uses: Ayowel/butler-to-itch@v1.0.0
-        with:
-          butler_key: ${{ secrets.BUTLER_API_KEY }}
-          itch_user: grumpyrumpus
-          itch_game: kitty-run-redux
-          version: ${{ github.sha }}
-          files: |
-            ${{ steps.export.outputs.archive_directory }}/Web.zip
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: ./butler push ${{ steps.export.outputs.archive_directory }}/Web.zip grumpyrumpus/kitty-run-redux:web
