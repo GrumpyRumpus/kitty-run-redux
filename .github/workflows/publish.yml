@@ -1,0 +1,34 @@
+name: Publish to itch.io
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Export
+        id: export
+        uses: firebelley/godot-export@v7.0.0
+        with:
+          godot_executable_download_url: https://github.com/godotengine/godot-builds/releases/download/4.6.1-stable/Godot_v4.6.1-stable_linux.x86_64.zip
+          godot_export_templates_download_url: https://github.com/godotengine/godot-builds/releases/download/4.6.1-stable/Godot_v4.6.1-stable_export_templates.tpz
+          relative_project_path: ./
+          archive_output: true
+          cache: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload to itch.io
+        uses: Ayowel/butler-to-itch@v1.0.0
+        with:
+          butler_key: ${{ secrets.BUTLER_API_KEY }}
+          itch_user: grumpyrumpus
+          itch_game: kitty-run-redux
+          version: ${{ github.sha }}
+          files: |
+            ${{ steps.export.outputs.archive_directory }}/Web.zip
