@@ -6,12 +6,12 @@ extends Node2D
 @export var speed: float
 @export var menu_mode: bool = false
 
-@onready var base = $"Base Layer"
-@onready var farthest = $"Farthest Trees"
-@onready var farther = $"Farther Trees"
-@onready var far = $"Far Trees"
-@onready var trees = $"Trees"
-@onready var bushes = $"Bushes"
+@onready var base: Parallax2D = $"Base Layer"
+@onready var farthest: Parallax2D = $"Farthest Trees"
+@onready var farther: Parallax2D = $"Farther Trees"
+@onready var far: Parallax2D = $"Far Trees"
+@onready var trees: Parallax2D = $"Trees"
+@onready var bushes: Parallax2D = $"Bushes"
 
 
 func _ready() -> void:

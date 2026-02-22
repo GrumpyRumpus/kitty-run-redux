@@ -11,10 +11,6 @@ var current_direction: float = 0
 var target_speed: float = 0
 
 
-func _ready() -> void:
-	pass
-
-
 func init() -> void:
 	pass
 

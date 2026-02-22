@@ -1,5 +1,5 @@
 class_name State
-extends Node2D
+extends Node
 
 var kitty: Kitty
 var state_machine: StateMachine

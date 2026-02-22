@@ -149,33 +149,33 @@ stream = ExtResource("27_jump")
 volume_db = -14.0
 bus = &"SFX"
 
-[node name="StateMachine" type="Node2D" parent="."]
+[node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_tqbcw")
 
-[node name="Standing" type="Node2D" parent="StateMachine"]
+[node name="Standing" type="Node" parent="StateMachine"]
 unique_name_in_owner = true
 script = ExtResource("23_egrb0")
 
-[node name="Running" type="Node2D" parent="StateMachine"]
+[node name="Running" type="Node" parent="StateMachine"]
 unique_name_in_owner = true
 script = ExtResource("4_x15o3")
 
-[node name="Jumping" type="Node2D" parent="StateMachine"]
+[node name="Jumping" type="Node" parent="StateMachine"]
 unique_name_in_owner = true
 script = ExtResource("5_lwgw5")
 
-[node name="Falling" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("coyote_timer")]
+[node name="Falling" type="Node" parent="StateMachine" node_paths=PackedStringArray("coyote_timer")]
 unique_name_in_owner = true
 script = ExtResource("6_010mf")
 coyote_timer = NodePath("CoyoteTimer")
 
 [node name="CoyoteTimer" type="Timer" parent="StateMachine/Falling"]
 
-[node name="Hurting" type="Node2D" parent="StateMachine"]
+[node name="Hurting" type="Node" parent="StateMachine"]
 unique_name_in_owner = true
 script = ExtResource("24_hurt")
 
-[node name="Dead" type="Node2D" parent="StateMachine"]
+[node name="Dead" type="Node" parent="StateMachine"]
 unique_name_in_owner = true
 script = ExtResource("25_dead")
 

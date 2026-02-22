@@ -20,14 +20,14 @@ func set_spawn_interval(interval: float) -> void:
 
 
 func _on_mob_spawn_timer_timeout() -> void:
-	var mob_scene = ResourceLoader.load_threaded_get(MOB_SCENE_PATH)
+	var mob_scene: PackedScene = ResourceLoader.load_threaded_get(MOB_SCENE_PATH)
 	var mob: Mob = mob_scene.instantiate()
 	mob.target = kitty
 	var mob_start_x: int = [-10, vp_width + 10].pick_random()
 	var mob_start_y: int = randi_range(vp_height / 8, vp_height / 3)
 	mob.position = Vector2i(mob_start_x, mob_start_y)
 	# relay kill score to game
-	var game = get_tree().current_scene
+	var game: Node = get_tree().current_scene
 	if game.has_method("add_kill_score"):
 		mob.mob_killed.connect(game.add_kill_score)
 	if game.has_method("extend_combo"):

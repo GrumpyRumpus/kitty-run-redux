@@ -1,7 +1,7 @@
 extends Control
 
 @onready var size_option: OptionButton = $MarginContainer/VBoxContainer/TabContainer/Video/SizeOption
-@onready var vhs_checkbox: CheckBox = $MarginContainer/VBoxContainer/TabContainer/Video/VHSCheckBox
+@onready var crt_checkbox: CheckBox = $MarginContainer/VBoxContainer/TabContainer/Video/CRTCheckBox
 @onready var fullscreen_checkbox: CheckBox = $MarginContainer/VBoxContainer/TabContainer/Video/FullscreenCheckBox
 @onready var sfx_slider: HSlider = $MarginContainer/VBoxContainer/TabContainer/Sound/SFXSlider
 @onready var music_slider: HSlider = $MarginContainer/VBoxContainer/TabContainer/Sound/MusicSlider
@@ -33,7 +33,7 @@ var _listening_button: Button = null
 
 func _ready() -> void:
 	size_option.selected = Settings.window_scale - 1
-	vhs_checkbox.button_pressed = Settings.vhs_enabled
+	crt_checkbox.button_pressed = Settings.crt_enabled
 	fullscreen_checkbox.button_pressed = Settings.fullscreen
 	size_option.disabled = Settings.fullscreen
 	sfx_slider.value = Settings.sfx_volume
@@ -98,8 +98,8 @@ func _on_size_selected(index: int) -> void:
 	Settings.window_scale = index + 1
 
 
-func _on_vhs_toggled(enabled: bool) -> void:
-	Settings.vhs_enabled = enabled
+func _on_crt_toggled(enabled: bool) -> void:
+	Settings.crt_enabled = enabled
 
 
 func _on_fullscreen_toggled(enabled: bool) -> void:

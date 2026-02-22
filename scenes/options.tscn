@@ -95,11 +95,11 @@ selected = 1
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
 layout_mode = 2
 
-[node name="VHSLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+[node name="CRTLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
 layout_mode = 2
 text = "CRT Filter"
 
-[node name="VHSCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+[node name="CRTCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
 layout_mode = 2
 button_pressed = true
 
@@ -134,7 +134,7 @@ text = "Left"
 
 [node name="LeftButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "A"
 
 [node name="RightLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
@@ -143,7 +143,7 @@ text = "Right"
 
 [node name="RightButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "D"
 
 [node name="JumpLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
@@ -152,7 +152,7 @@ text = "Jump"
 
 [node name="JumpButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "W"
 
 [node name="ShootLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
@@ -161,7 +161,7 @@ text = "Shoot"
 
 [node name="ShootButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "Space"
 
 [node name="SprintLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
@@ -170,7 +170,7 @@ text = "Sprint"
 
 [node name="SprintButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "Shift"
 
 [node name="PauseLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
@@ -179,7 +179,7 @@ text = "Pause"
 
 [node name="PauseButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/MovementGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "Escape"
 
 [node name="AimGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer"]
@@ -193,7 +193,7 @@ text = "Aim UL"
 
 [node name="AimUpLeftButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "U"
 
 [node name="AimUpLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
@@ -202,7 +202,7 @@ text = "Aim U"
 
 [node name="AimUpButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "I"
 
 [node name="AimUpRightLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
@@ -211,7 +211,7 @@ text = "Aim UR"
 
 [node name="AimUpRightButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "O"
 
 [node name="AimLeftLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
@@ -220,7 +220,7 @@ text = "Aim L"
 
 [node name="AimLeftButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "J"
 
 [node name="AimDownLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
@@ -229,7 +229,7 @@ text = "Aim D"
 
 [node name="AimDownButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "K"
 
 [node name="AimRightLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
@@ -238,7 +238,7 @@ text = "Aim R"
 
 [node name="AimRightButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls/BindingsContainer/AimGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentButton"
 text = "L"
 
 [node name="ResetBindingsButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Controls"]
@@ -273,6 +273,6 @@ text = "Back"
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/TabContainer/Sound/MusicSlider" to="." method="_on_music_changed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Sound/MuteCheckBox" to="." method="_on_mute_toggled"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/TabContainer/Video/SizeOption" to="." method="_on_size_selected"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Video/VHSCheckBox" to="." method="_on_vhs_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Video/CRTCheckBox" to="." method="_on_crt_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/TabContainer/Video/FullscreenCheckBox" to="." method="_on_fullscreen_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Data/ResetScoreButton" to="." method="_on_reset_score_pressed"]

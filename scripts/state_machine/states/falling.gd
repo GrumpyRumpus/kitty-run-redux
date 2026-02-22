@@ -10,10 +10,6 @@ extends State
 var move_speed: float
 
 
-func _ready() -> void:
-	pass
-
-
 func init() -> void:
 	coyote_timer.wait_time = coyote_time
 	coyote_timer.one_shot = true

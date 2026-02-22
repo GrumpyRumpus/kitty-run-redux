@@ -8,10 +8,6 @@ extends State
 var move_speed: float = 0
 
 
-func _ready() -> void:
-	pass
-
-
 func init() -> void:
 	pass
 

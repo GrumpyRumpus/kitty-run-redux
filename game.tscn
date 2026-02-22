@@ -8,22 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://c51r5oafed6on" path="res://scenes/world_boundary.tscn" id="6_vef74"]
 [ext_resource type="PackedScene" uid="uid://bpwj4hs5n35kq" path="res://scenes/kitty.tscn" id="7_j5wjh"]
 [ext_resource type="PackedScene" uid="uid://7snpi3e2fnf3" path="res://scenes/mob_spawner.tscn" id="7_vef74"]
-[ext_resource type="Shader" uid="uid://uugfpnvc1p4n" path="res://scripts/shaders/vhs.gdshader" id="10_hve3p"]
+[ext_resource type="PackedScene" path="res://scenes/crt_overlay.tscn" id="10_crt"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="11_pause"]
 [ext_resource type="Script" path="res://scripts/tutorial_overlay.gd" id="13_tutorial"]
 [ext_resource type="Shader" uid="uid://cgqsdrlqn5fda" path="res://scripts/shaders/pixel_transition.gdshader" id="12_transition"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mfdv2"]
-shader = ExtResource("10_hve3p")
-shader_parameter/mask_type = 1
-shader_parameter/curve = 0.05
-shader_parameter/sharpness = 0.667
-shader_parameter/color_offset = 0.1
-shader_parameter/mask_brightness = 1.0
-shader_parameter/scanline_brightness = 0.95
-shader_parameter/min_scanline_thickness = 0.9
-shader_parameter/aspect = 0.5
-shader_parameter/wobble_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_transition"]
 shader = ExtResource("12_transition")
@@ -64,12 +52,7 @@ position = Vector2(168, 64)
 
 [node name="HUD" parent="World" unique_id=26939183 instance=ExtResource("4_fc0e3")]
 
-[node name="VHS" type="CanvasLayer" parent="World" unique_id=1711135163]
-
-[node name="ColorRect" type="ColorRect" parent="World/VHS" unique_id=1619936178]
-material = SubResource("ShaderMaterial_mfdv2")
-offset_right = 512.0
-offset_bottom = 256.0
+[node name="CRT" parent="World" unique_id=1711135163 instance=ExtResource("10_crt")]
 
 [node name="GameOverLayer" type="CanvasLayer" parent="." unique_id=654141363]
 process_mode = 3
@@ -96,7 +79,7 @@ alignment = 1
 
 [node name="GameOverLabel" type="Label" parent="GameOverLayer/CenterContainer/VBoxContainer" unique_id=1568957457]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentLabel"
 theme_override_font_sizes/font_size = 24
 text = "GAME OVER"
 horizontal_alignment = 1
@@ -108,7 +91,7 @@ horizontal_alignment = 1
 
 [node name="HighScoreLabel" type="Label" parent="GameOverLayer/CenterContainer/VBoxContainer" unique_id=2110078654]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentLabel"
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="GameOverLayer/CenterContainer/VBoxContainer" unique_id=164031587]

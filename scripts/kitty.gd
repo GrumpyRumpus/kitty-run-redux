@@ -29,14 +29,10 @@ var extra_jumps: int = 0
 @export var state_machine: StateMachine
 @export var shoot_component: ShootComponent
 
-@onready var standing_state: StandingState = %Standing
-@onready var running_state: RunningState = %Running
-@onready var jumping_state: JumpingState = %Jumping
-@onready var falling_state: FallingState = %Falling
 @onready var hurting_state: HurtingState = %Hurting
 @onready var dead_state: DeadState = %Dead
 
-var gravity_multiplier = 1
+var gravity_multiplier: float = 1.0
 var aim_direction: Vector2 = Vector2.RIGHT
 var _mouse_viewport: Vector2 = Vector2.ZERO
 
@@ -128,8 +124,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	state_machine._unhandled_input(event)
 
 
-func update_velocity(_velocity: float, _acceleration: float) -> void:
-	velocity.x = move_toward(velocity.x, _velocity, _acceleration)
+func update_velocity(target_velocity: float, accel: float) -> void:
+	velocity.x = move_toward(velocity.x, target_velocity, accel)
 
 
 func take_damage(amount: int, source_pos: Vector2 = Vector2.ZERO) -> void:

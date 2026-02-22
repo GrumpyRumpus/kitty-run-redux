@@ -1,21 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ceyiy0s1o4tbs"]
+[gd_scene load_steps=5 format=3 uid="uid://ceyiy0s1o4tbs"]
 
 [ext_resource type="Script" uid="uid://coudk8y0eppj4" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="PackedScene" uid="uid://bkf30hwr3kqln" path="res://scenes/background.tscn" id="2_ekxnf"]
 [ext_resource type="PackedScene" uid="uid://mj05u1jfjxm" path="res://scenes/options.tscn" id="3_bqqt6"]
-[ext_resource type="Shader" uid="uid://uugfpnvc1p4n" path="res://scripts/shaders/vhs.gdshader" id="4_vhs"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vhs"]
-shader = ExtResource("4_vhs")
-shader_parameter/mask_type = 1
-shader_parameter/curve = 0.05
-shader_parameter/sharpness = 0.667
-shader_parameter/color_offset = 0.1
-shader_parameter/mask_brightness = 1.0
-shader_parameter/scanline_brightness = 0.95
-shader_parameter/min_scanline_thickness = 0.9
-shader_parameter/aspect = 0.5
-shader_parameter/wobble_strength = 0.0
+[ext_resource type="PackedScene" path="res://scenes/crt_overlay.tscn" id="4_crt"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -68,7 +56,7 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentLabel"
 theme_override_font_sizes/font_size = 42
 text = "Kitty Run"
 
@@ -93,7 +81,7 @@ text = "Exit"
 
 [node name="HighScoreLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980, 0.702, 0.529, 1)
+theme_type_variation = "AccentLabel"
 theme_override_font_sizes/font_size = 16
 text = ""
 horizontal_alignment = 1
@@ -102,13 +90,7 @@ horizontal_alignment = 1
 visible = false
 layout_mode = 1
 
-[node name="VHS" type="CanvasLayer" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="VHS"]
-material = SubResource("ShaderMaterial_vhs")
-offset_right = 512.0
-offset_bottom = 256.0
-mouse_filter = 2
+[node name="CRT" parent="." instance=ExtResource("4_crt")]
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/OptionButton" to="." method="_on_option_button_pressed"]

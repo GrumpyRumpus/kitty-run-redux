@@ -25,7 +25,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	self.position.x -= 2 * speed * delta
+	position.x -= 2 * speed * delta
 
 
 func switch_ground(ground_index: int) -> void:
@@ -61,9 +61,9 @@ func switch_ground(ground_index: int) -> void:
 		line.points = segment
 		grass_lines.append(line)
 
-	self.position.y = randi_range(vp_height / 2, vp_height / 2 + 25)
+	position.y = randi_range(vp_height / 2, vp_height / 2 + 25)
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	self.position.x = vp_width
+	position.x = vp_width
 	switch_ground(randi_range(0, 9))

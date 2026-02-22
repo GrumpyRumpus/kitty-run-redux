@@ -1,6 +1,6 @@
 extends Node
 
-signal vhs_changed(enabled: bool)
+signal crt_changed(enabled: bool)
 
 const SAVE_PATH := "user://settings.dat"
 
@@ -25,10 +25,10 @@ const ARROW_EXTRAS := {
 var _loading: bool = false
 var input_bindings: Dictionary = {}
 
-var vhs_enabled: bool = true:
+var crt_enabled: bool = true:
 	set(value):
-		vhs_enabled = value
-		vhs_changed.emit(value)
+		crt_enabled = value
+		crt_changed.emit(value)
 		_save()
 
 var window_scale: int = 2:
@@ -68,7 +68,6 @@ var fullscreen: bool = false:
 
 
 func _ready() -> void:
-	_register_aim_actions()
 	_load()
 	_apply_bindings()
 	_apply_window_scale()
@@ -76,15 +75,6 @@ func _ready() -> void:
 	_apply_bus_volume("SFX", sfx_volume)
 	_apply_bus_volume("Music", music_volume)
 	AudioServer.set_bus_mute(0, muted)
-
-
-func _register_aim_actions() -> void:
-	for action in ["aim_left", "aim_right", "aim_up", "aim_down", "aim_up_left", "aim_up_right"]:
-		if not InputMap.has_action(action):
-			InputMap.add_action(action)
-			var event := InputEventKey.new()
-			event.physical_keycode = DEFAULT_KEYS[action]
-			InputMap.action_add_event(action, event)
 
 
 func _apply_bindings() -> void:
@@ -148,7 +138,7 @@ func _save() -> void:
 		return
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
-		file.store_8(1 if vhs_enabled else 0)
+		file.store_8(1 if crt_enabled else 0)
 		file.store_8(window_scale)
 		file.store_float(sfx_volume)
 		file.store_float(music_volume)
@@ -165,7 +155,7 @@ func _load() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file:
 		_loading = true
-		vhs_enabled = file.get_8() == 1
+		crt_enabled = file.get_8() == 1
 		window_scale = file.get_8()
 		if file.get_position() < file.get_length():
 			sfx_volume = file.get_float()

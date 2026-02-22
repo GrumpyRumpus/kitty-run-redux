@@ -4,14 +4,14 @@ const MAIN_MENU_FILE := "res://scenes/main_menu.tscn"
 const SCORE_POPUP := preload("res://scenes/score_popup.tscn")
 
 @onready var kitty: Kitty = $World/Level/Kitty
-@onready var hud = $World/HUD
-@onready var mob_spawner = $World/Level/MobSpawner
-@onready var game_over_layer = $GameOverLayer
+@onready var hud: CanvasLayer = $World/HUD
+@onready var mob_spawner: Node2D = $World/Level/MobSpawner
+@onready var game_over_layer: CanvasLayer = $GameOverLayer
 @onready var game_over_score_label: Label = $GameOverLayer/CenterContainer/VBoxContainer/ScoreLabel
 @onready var high_score_label: Label = $GameOverLayer/CenterContainer/VBoxContainer/HighScoreLabel
-@onready var vhs_layer: CanvasLayer = $World/VHS
+@onready var crt_layer: CanvasLayer = $World/CRT
 @onready var camera: Camera2D = $World/Camera2D
-@onready var pause_menu = $PauseMenu
+@onready var pause_menu: CanvasLayer = $PauseMenu
 @onready var transition_layer: CanvasLayer = $TransitionLayer
 @onready var transition_rect: ColorRect = $TransitionLayer/ColorRect
 
@@ -23,25 +23,28 @@ var score_tick: float = 0.0
 var is_game_over: bool = false
 var combo_count: int = 0
 var combo_timer: float = 0.0
-var _last_health: int = 3
+var _last_health: int = Kitty.MAX_HEALTH
 
 
 func _ready() -> void:
 	MusicManager.play_game()
 	game_over_layer.visible = false
 	transition_layer.visible = false
-	vhs_layer.visible = Settings.vhs_enabled
-	Settings.vhs_changed.connect(func(on): vhs_layer.visible = on)
+	crt_layer.visible = Settings.crt_enabled
+	Settings.crt_changed.connect(_on_crt_changed)
 	hud.update_score(score)
 	hud.update_health(kitty.health)
 	kitty.health_changed.connect(_on_kitty_health_changed)
 	kitty.stomped.connect(_on_kitty_stomped)
 	kitty.powerup_changed.connect(_on_kitty_powerup_changed)
-	# game_over is wired in game.tscn -- no duplicate connect needed
-	# backup fall_down connection in case .tscn wiring is missing
-	var wb = $World/Level/WorldBoundary
-	if wb and not wb.fall_down.is_connected(kitty._on_world_boundary_fall_down):
-		wb.fall_down.connect(kitty._on_world_boundary_fall_down)
+
+
+func _exit_tree() -> void:
+	Settings.crt_changed.disconnect(_on_crt_changed)
+
+
+func _on_crt_changed(on: bool) -> void:
+	crt_layer.visible = on
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -176,3 +176,7 @@ CheckBox/icons/unchecked = ExtResource("cb_off")
 CheckBox/styles/normal = SubResource("cb_normal")
 CheckBox/styles/hover = SubResource("cb_hover")
 HSlider/styles/slider = SubResource("slider_style")
+AccentLabel/base_type = "Label"
+AccentLabel/colors/font_color = Color(0.980, 0.702, 0.529, 1)
+AccentButton/base_type = "Button"
+AccentButton/colors/font_color = Color(0.980, 0.702, 0.529, 1)

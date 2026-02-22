@@ -5,10 +5,6 @@ extends State
 @export var deceleration: float = 8
 
 
-func _ready() -> void:
-	pass
-
-
 func init() -> void:
 	pass
 

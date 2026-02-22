@@ -1,5 +1,5 @@
 class_name StateMachine
-extends Node2D
+extends Node
 
 var current_state: State
 var previous_state: State
@@ -13,12 +13,12 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	var new_state = current_state.process(delta)
+	var new_state: State = current_state.process(delta)
 	change_state(new_state)
 
 
 func _physics_process(delta: float) -> void:
-	var new_state = current_state.process_physics(delta)
+	var new_state: State = current_state.process_physics(delta)
 	change_state(new_state)
 
 
@@ -27,7 +27,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		sign(Input.get_axis("left", "right")),
 		sign(Input.get_axis("up", "down"))
 	)
-	var new_state = current_state.handle_input(event)
+	var new_state: State = current_state.handle_input(event)
 	change_state(new_state)
 
 

@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Shader" path="res://scripts/shaders/crt.gdshader" id="1_crt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt"]
+shader = ExtResource("1_crt")
+shader_parameter/mask_type = 1
+shader_parameter/curve = 0.05
+shader_parameter/sharpness = 0.667
+shader_parameter/color_offset = 0.1
+shader_parameter/mask_brightness = 1.0
+shader_parameter/scanline_brightness = 0.95
+shader_parameter/min_scanline_thickness = 0.9
+shader_parameter/aspect = 0.5
+shader_parameter/wobble_strength = 0.0
+
+[node name="CRT" type="CanvasLayer"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_crt")
+offset_right = 512.0
+offset_bottom = 256.0
+mouse_filter = 2

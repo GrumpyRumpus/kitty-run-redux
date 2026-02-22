@@ -8,7 +8,7 @@ extends Node
 @export var bullet_time: float = 0.15
 @export var is_friendly: bool = false
 
-var bullet = load("res://scenes/bullet.tscn")
+const BULLET_SCENE: PackedScene = preload("res://scenes/bullet.tscn")
 var fire_rate_override: float = 0.0
 var giant_mode: bool = false
 
@@ -28,10 +28,10 @@ func able_to_shoot() -> bool:
 	return bullet_timer.is_stopped()
 
 
-func shoot(initial: Vector2, target: Vector2):
+func shoot(initial: Vector2, target: Vector2) -> void:
 	bullet_timer.wait_time = fire_rate_override if fire_rate_override > 0.0 else bullet_time
 	bullet_timer.start()
-	var instance = bullet.instantiate()
+	var instance: Bullet = BULLET_SCENE.instantiate()
 	instance.position = initial
 	instance.is_friendly = is_friendly
 	if is_friendly and giant_mode:

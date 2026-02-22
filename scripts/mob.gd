@@ -5,7 +5,7 @@ signal mob_killed(pos: Vector2)
 signal mob_hit
 
 const DEATH_PARTICLES := preload("res://scenes/death_particles.tscn")
-const FLASH_SHADER := preload("res://shaders/flash.gdshader")
+const FLASH_SHADER := preload("res://scripts/shaders/flash.gdshader")
 const PICKUP_SCENE := preload("res://scenes/pickup.tscn")
 
 @export var flap_path_left: PathFollow2D

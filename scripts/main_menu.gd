@@ -1,17 +1,17 @@
 extends Control
 
-var game = preload("res://game.tscn")
+const GAME_SCENE: PackedScene = preload("res://game.tscn")
 
 @onready var high_score_label: Label = $VBoxContainer/HighScoreLabel
 
 
-@onready var vhs_layer: CanvasLayer = $VHS
+@onready var crt_layer: CanvasLayer = $CRT
 
 
 func _ready() -> void:
 	MusicManager.play_menu()
-	vhs_layer.visible = Settings.vhs_enabled
-	Settings.vhs_changed.connect(func(on): vhs_layer.visible = on)
+	crt_layer.visible = Settings.crt_enabled
+	Settings.crt_changed.connect(_on_crt_changed)
 	var best := HighScore.get_high_score()
 	if best > 0:
 		high_score_label.text = "best: %d" % best
@@ -19,12 +19,16 @@ func _ready() -> void:
 		high_score_label.text = ""
 
 
-func _process(delta: float) -> void:
-	pass
+func _exit_tree() -> void:
+	Settings.crt_changed.disconnect(_on_crt_changed)
+
+
+func _on_crt_changed(on: bool) -> void:
+	crt_layer.visible = on
 
 
 func _on_start_button_pressed() -> void:
-	get_tree().change_scene_to_packed(game)
+	get_tree().change_scene_to_packed(GAME_SCENE)
 
 
 func _on_option_button_pressed() -> void:
