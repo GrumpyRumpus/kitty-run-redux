@@ -52,7 +52,7 @@ position = Vector2(168, 64)
 
 [node name="HUD" parent="World" unique_id=26939183 instance=ExtResource("4_fc0e3")]
 
-[node name="CRT" parent="World" unique_id=1711135163 instance=ExtResource("10_crt")]
+[node name="CRT" parent="World" instance=ExtResource("10_crt")]
 
 [node name="GameOverLayer" type="CanvasLayer" parent="." unique_id=654141363]
 process_mode = 3

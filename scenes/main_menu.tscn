@@ -86,13 +86,15 @@ theme_override_font_sizes/font_size = 16
 text = ""
 horizontal_alignment = 1
 
-[node name="Options" parent="." instance=ExtResource("3_bqqt6")]
-visible = false
-layout_mode = 1
-
 [node name="CRT" parent="." instance=ExtResource("4_crt")]
+
+[node name="OptionsLayer" type="CanvasLayer" parent="."]
+layer = 2
+visible = false
+
+[node name="Options" parent="OptionsLayer" instance=ExtResource("3_bqqt6")]
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/OptionButton" to="." method="_on_option_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
-[connection signal="pressed" from="Options/MarginContainer/VBoxContainer/BackButton" to="." method="_on_options_back_pressed"]
+[connection signal="pressed" from="OptionsLayer/Options/MarginContainer/VBoxContainer/BackButton" to="." method="_on_options_back_pressed"]

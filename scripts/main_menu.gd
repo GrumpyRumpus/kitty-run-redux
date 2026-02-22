@@ -33,11 +33,11 @@ func _on_start_button_pressed() -> void:
 
 func _on_option_button_pressed() -> void:
 	$VBoxContainer.visible = false
-	$Options.visible = true
+	$OptionsLayer.visible = true
 
 
 func _on_options_back_pressed() -> void:
-	$Options.visible = false
+	$OptionsLayer.visible = false
 	$VBoxContainer.visible = true
 
 
