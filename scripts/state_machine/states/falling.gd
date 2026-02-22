@@ -39,6 +39,10 @@ func handle_input(event: InputEvent) -> State:
 		if kitty.can_double_jump:
 			kitty.can_double_jump = false
 			return jumping_state
+		if kitty.extra_jumps > 0:
+			kitty.extra_jumps -= 1
+			kitty.powerup_changed.emit()
+			return jumping_state
 	return null
 
 

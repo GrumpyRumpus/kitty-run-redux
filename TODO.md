@@ -14,11 +14,17 @@ GAMEPLAY
   [ ] Mob AI awareness -- bias toward SHOOT when near kitty, SWOOP toward kitty X
 
 ---- Powerups ----
-  [ ] Power-up drop system -- random drops from killed enemies or floating collectibles
-  [ ] Rapid fire -- reduce bullet cooldown for a duration
-  [ ] Giant bullet -- larger projectile, pierces through multiple enemies
-  [ ] Extra jumps -- triple/quad jump for a duration
-  [ ] Shield -- absorbs one hit without losing health
+  [x] Power-up drop system -- random drops from killed enemies (20% chance)
+      pickup.gd Area2D with gravity, bob, blink, 6s despawn
+  [x] Rapid fire -- halves bullet cooldown for 8s
+      shoot_component fire_rate_override, kitty ticks down rapid_fire_time
+  [x] Giant bullet -- 2x scale, 3 damage (one-shots mobs), 15 shots
+      bullet.gd is_giant flag, shoot_component giant_mode, peach tint
+  [x] Extra jumps -- 3 additional air jumps after double jump consumed
+      falling.gd checks kitty.extra_jumps after can_double_jump
+  [x] Shield -- absorbs one hit, blue flash feedback, brief invincibility
+      kitty.gd has_shield, take_damage checks shield first, mob excludes from pool
+  [x] Health pack -- restores to full HP on pickup
   [ ] Score magnet -- pulls nearby pickups toward kitty
   [ ] Speed boost -- temporarily increases max run speed + ground scroll
 
@@ -81,17 +87,17 @@ HUD
 ============================================================
 
   [ ] Health as heart sprites -- replace unicode hearts with pixel art icons
-  [ ] Powerup timer bar -- small bar showing remaining duration of active powerup
+  [x] Powerup indicator -- HUD label shows active powerup with countdown/count
+      hud.gd update_powerup(), priority display for multiple active
   [ ] Distance tracker -- show distance traveled alongside score
-  [ ] Floating score popups -- "+1" text at kill location that fades upward
-      score_popup.tscn exists, just needs to be wired to all kill paths
+  [x] Floating score popups -- "+1" text at kill location that fades upward
+      wired via mob_killed signal -> add_kill_score for both bullet and stomp kills
 
 ============================================================
 QOL
 ============================================================
 
   [ ] Input rebinding
-  [ ] Gamepad support (right stick aim)
   [x] First-run tutorial hints (double jump, stomp, shooting)
   [x] Fullscreen toggle in options menu
 

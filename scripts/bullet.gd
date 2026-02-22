@@ -7,6 +7,7 @@ const IMPACT := preload("res://scenes/bullet_impact.tscn")
 
 var direction: Vector2
 var is_friendly: bool = false
+var is_giant: bool = false
 
 
 func aim(origin: Vector2, target: Vector2) -> void:
@@ -14,6 +15,9 @@ func aim(origin: Vector2, target: Vector2) -> void:
 	rotation = (target - origin).angle()
 	if not is_friendly:
 		modulate = Color(1.0, 0.3, 0.3)
+	if is_giant:
+		scale = Vector2(3.0, 3.0)
+		modulate = Color("#fab387")
 
 
 func _process(delta: float) -> void:
@@ -38,7 +42,7 @@ func _on_body_entered(body: Node2D) -> void:
 		queue_free()
 		return
 	if is_friendly and body is Mob:
-		body.take_damage(1)
+		body.take_damage(3 if is_giant else 1)
 		_spawn_impact()
 		queue_free()
 		return

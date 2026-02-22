@@ -7,6 +7,7 @@ var gravity: float = 980
 signal game_over
 signal health_changed(new_health: int)
 signal stomped
+signal powerup_changed
 
 const MAX_HEALTH: int = 3
 const DUST_PUFF := preload("res://scenes/dust_puff.tscn")
@@ -15,6 +16,12 @@ var health: int = MAX_HEALTH
 var is_invincible: bool = false
 var can_double_jump: bool = true
 var last_damage_source_pos: Vector2 = Vector2.ZERO
+
+# powerup state
+var has_shield: bool = false
+var giant_bullets: int = 0
+var rapid_fire_time: float = 0.0
+var extra_jumps: int = 0
 
 @export_group("Nodes")
 @export var animated_sprite: AnimatedSprite2D
@@ -87,6 +94,13 @@ func _get_keyboard_aim() -> Vector2:
 
 func _process(delta: float) -> void:
 	state_machine._process(delta)
+	# rapid fire tick-down
+	if rapid_fire_time > 0.0:
+		rapid_fire_time -= delta
+		if rapid_fire_time <= 0.0:
+			rapid_fire_time = 0.0
+			shoot_component.fire_rate_override = 0.0
+			powerup_changed.emit()
 	# shooting input
 	var current := state_machine.current_state
 	if current != hurting_state and current != dead_state:
@@ -102,7 +116,12 @@ func _process(delta: float) -> void:
 				shoot_dir = aim_direction
 		if shoot_dir != Vector2.ZERO:
 			var target := global_position + shoot_dir * 100.0
-			shoot_component.handle_shoot(global_position, target, true)
+			if shoot_component.handle_shoot(global_position, target, true):
+				if giant_bullets > 0:
+					giant_bullets -= 1
+					if giant_bullets == 0:
+						shoot_component.giant_mode = false
+					powerup_changed.emit()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -115,6 +134,15 @@ func update_velocity(_velocity: float, _acceleration: float) -> void:
 
 func take_damage(amount: int, source_pos: Vector2 = Vector2.ZERO) -> void:
 	if is_invincible or health <= 0:
+		return
+	if has_shield:
+		has_shield = false
+		powerup_changed.emit()
+		# blue flash feedback
+		animated_sprite.modulate = Color("#89b4fa")
+		var flash_tween := create_tween()
+		flash_tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.2)
+		start_invincibility(0.5)
 		return
 	last_damage_source_pos = source_pos
 	health -= amount
@@ -167,6 +195,24 @@ func _check_contact_damage() -> void:
 
 func die() -> void:
 	game_over.emit()
+
+
+func collect_powerup(type: Pickup.Type) -> void:
+	match type:
+		Pickup.Type.HEALTH:
+			health = MAX_HEALTH
+			health_changed.emit(health)
+		Pickup.Type.SHIELD:
+			has_shield = true
+		Pickup.Type.GIANT_BULLET:
+			giant_bullets = 25
+			shoot_component.giant_mode = true
+		Pickup.Type.RAPID_FIRE:
+			rapid_fire_time = 8.0
+			shoot_component.fire_rate_override = 0.075
+		Pickup.Type.EXTRA_JUMP:
+			extra_jumps = 3
+	powerup_changed.emit()
 
 
 func _spawn_dust_puff() -> void:

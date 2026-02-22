@@ -2,9 +2,11 @@ class_name Mob
 extends AnimatableBody2D
 
 signal mob_killed(pos: Vector2)
+signal mob_hit
 
 const DEATH_PARTICLES := preload("res://scenes/death_particles.tscn")
 const FLASH_SHADER := preload("res://shaders/flash.gdshader")
+const PICKUP_SCENE := preload("res://scenes/pickup.tscn")
 
 @export var flap_path_left: PathFollow2D
 @export var flap_path_right: PathFollow2D
@@ -73,6 +75,7 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		_die()
 	else:
+		mob_hit.emit()
 		sprite.play("hurt")
 		sprite.material.set_shader_parameter("flash_amount", 1.0)
 		var tween := create_tween()
@@ -85,6 +88,7 @@ func take_damage(amount: int) -> void:
 func _die() -> void:
 	is_dead = true
 	mob_killed.emit(global_position)
+	_try_spawn_pickup()
 	# spawn death particles
 	var particles := DEATH_PARTICLES.instantiate()
 	particles.global_position = global_position
@@ -101,6 +105,31 @@ func _die() -> void:
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
 	await tween.finished
 	queue_free()
+
+
+func _try_spawn_pickup() -> void:
+	if randf() >= 0.2:
+		return
+	var pool: Array[Pickup.Type] = [
+		Pickup.Type.HEALTH,
+		Pickup.Type.SHIELD,
+		Pickup.Type.GIANT_BULLET,
+		Pickup.Type.RAPID_FIRE,
+		Pickup.Type.EXTRA_JUMP,
+	]
+	if is_instance_valid(target) and target is Kitty:
+		if target.has_shield:
+			pool.erase(Pickup.Type.SHIELD)
+		if target.health >= Kitty.MAX_HEALTH:
+			pool.erase(Pickup.Type.HEALTH)
+	var pickup := PICKUP_SCENE.instantiate()
+	pickup.type = pool.pick_random()
+	pickup.global_position = global_position
+	var level := get_tree().current_scene.get_node_or_null("World/Level")
+	if level:
+		level.add_child(pickup)
+	else:
+		pickup.queue_free()
 
 
 func follow_path(delta: float, path: PathFollow2D, speed: int = 50) -> float:

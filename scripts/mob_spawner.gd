@@ -30,5 +30,7 @@ func _on_mob_spawn_timer_timeout() -> void:
 	var game = get_tree().current_scene
 	if game.has_method("add_kill_score"):
 		mob.mob_killed.connect(game.add_kill_score)
+	if game.has_method("extend_combo"):
+		mob.mob_hit.connect(game.extend_combo)
 	add_child(mob)
 	ResourceLoader.load_threaded_request(MOB_SCENE_PATH)

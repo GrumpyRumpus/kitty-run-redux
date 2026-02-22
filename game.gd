@@ -23,6 +23,7 @@ var score_tick: float = 0.0
 var is_game_over: bool = false
 var combo_count: int = 0
 var combo_timer: float = 0.0
+var _last_health: int = 3
 
 
 func _ready() -> void:
@@ -35,6 +36,7 @@ func _ready() -> void:
 	hud.update_health(kitty.health)
 	kitty.health_changed.connect(_on_kitty_health_changed)
 	kitty.stomped.connect(_on_kitty_stomped)
+	kitty.powerup_changed.connect(_on_kitty_powerup_changed)
 	# game_over is wired in game.tscn -- no duplicate connect needed
 	# backup fall_down connection in case .tscn wiring is missing
 	var wb = $World/Level/WorldBoundary
@@ -69,6 +71,9 @@ func _process(delta: float) -> void:
 	# difficulty scaling -- spawn interval 5s -> 2s over 500 points
 	var interval := lerpf(5.0, 2.0, clampf(float(score) / 500.0, 0.0, 1.0))
 	mob_spawner.set_spawn_interval(interval)
+	# live update for timed powerups
+	if kitty.rapid_fire_time > 0.0:
+		hud.update_powerup(kitty)
 
 
 func add_kill_score(pos: Vector2) -> void:
@@ -81,6 +86,11 @@ func add_kill_score(pos: Vector2) -> void:
 	popup.position = pos
 	popup.set_value(combo_count)
 	$World/Level.add_child(popup)
+
+
+func extend_combo() -> void:
+	if combo_count > 0:
+		combo_timer = COMBO_WINDOW
 
 
 func _reset_combo() -> void:
@@ -99,9 +109,18 @@ func _on_kitty_stomped() -> void:
 
 
 func _on_kitty_health_changed(new_health: int) -> void:
+	var prev_health := _last_health
+	_last_health = new_health
 	hud.update_health(new_health)
-	_screen_shake(4.0, 0.2)
-	_reset_combo()
+	if new_health < prev_health:
+		_screen_shake(4.0, 0.2)
+		_reset_combo()
+	elif new_health > prev_health:
+		hud.flash_health_pickup()
+
+
+func _on_kitty_powerup_changed() -> void:
+	hud.update_powerup(kitty)
 
 
 func _on_kitty_game_over() -> void:

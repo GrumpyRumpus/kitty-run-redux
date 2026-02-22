@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bamdlbn0v5fxh"]
+[gd_scene load_steps=6 format=3 uid="uid://bamdlbn0v5fxh"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
 
@@ -13,6 +13,10 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_health"]
 font_color = Color(0.953, 0.545, 0.659, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_powerup"]
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
@@ -34,6 +38,14 @@ offset_right = 60.0
 offset_bottom = 43.0
 visible = false
 label_settings = SubResource("LabelSettings_combo")
+
+[node name="PowerupLabel" type="Label" parent="."]
+offset_left = 4.0
+offset_top = 42.0
+offset_right = 80.0
+offset_bottom = 63.0
+visible = false
+label_settings = SubResource("LabelSettings_powerup")
 
 [node name="HealthLabel" type="Label" parent="."]
 anchors_preset = 1
