@@ -77,17 +77,17 @@ func _get_world_mouse_position() -> Vector2:
 
 func _get_keyboard_aim() -> Vector2:
 	var aim := Vector2.ZERO
-	if Input.is_physical_key_pressed(KEY_J):
+	if Input.is_action_pressed("aim_left"):
 		aim += Vector2.LEFT
-	if Input.is_physical_key_pressed(KEY_L):
+	if Input.is_action_pressed("aim_right"):
 		aim += Vector2.RIGHT
-	if Input.is_physical_key_pressed(KEY_I):
+	if Input.is_action_pressed("aim_up"):
 		aim += Vector2.UP
-	if Input.is_physical_key_pressed(KEY_K):
+	if Input.is_action_pressed("aim_down"):
 		aim += Vector2.DOWN
-	if Input.is_physical_key_pressed(KEY_U):
+	if Input.is_action_pressed("aim_up_left"):
 		aim += Vector2(-1, -1)
-	if Input.is_physical_key_pressed(KEY_O):
+	if Input.is_action_pressed("aim_up_right"):
 		aim += Vector2(1, -1)
 	return aim.normalized() if aim != Vector2.ZERO else Vector2.ZERO
 

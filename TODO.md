@@ -97,7 +97,7 @@ HUD
 QOL
 ============================================================
 
-  [ ] Input rebinding
+  [x] Input rebinding
   [x] First-run tutorial hints (double jump, stomp, shooting)
   [x] Fullscreen toggle in options menu
 

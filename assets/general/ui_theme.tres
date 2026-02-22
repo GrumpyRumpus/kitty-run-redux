@@ -1,4 +1,7 @@
-[gd_resource type="Theme" load_steps=15 format=3]
+[gd_resource type="Theme" load_steps=17 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/general/cb_unchecked.png" id="cb_off"]
+[ext_resource type="Texture2D" path="res://assets/general/cb_checked.png" id="cb_on"]
 
 [sub_resource type="StyleBoxFlat" id="btn_normal"]
 bg_color = Color(0.118, 0.118, 0.18, 1)
@@ -168,6 +171,8 @@ TabContainer/styles/tab_focus = SubResource("tab_focus")
 TabContainer/styles/panel = SubResource("tab_panel")
 CheckBox/colors/font_color = Color(0.804, 0.839, 0.957, 1)
 CheckBox/colors/font_hover_color = Color(0.537, 0.863, 0.922, 1)
+CheckBox/icons/checked = ExtResource("cb_on")
+CheckBox/icons/unchecked = ExtResource("cb_off")
 CheckBox/styles/normal = SubResource("cb_normal")
 CheckBox/styles/hover = SubResource("cb_hover")
 HSlider/styles/slider = SubResource("slider_style")

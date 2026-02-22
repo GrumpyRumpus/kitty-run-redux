@@ -8,6 +8,27 @@ extends Control
 @onready var mute_checkbox: CheckBox = $MarginContainer/VBoxContainer/TabContainer/Sound/MuteCheckBox
 @onready var high_score_value: Label = $MarginContainer/VBoxContainer/TabContainer/Data/HighScoreValue
 @onready var reset_score_button: Button = $MarginContainer/VBoxContainer/TabContainer/Data/ResetScoreButton
+@onready var controls_tab: VBoxContainer = $MarginContainer/VBoxContainer/TabContainer/Controls
+@onready var reset_bindings_button: Button = $MarginContainer/VBoxContainer/TabContainer/Controls/ResetBindingsButton
+
+const ACTION_BUTTONS := {
+	"left": "LeftButton",
+	"right": "RightButton",
+	"up": "JumpButton",
+	"shoot": "ShootButton",
+	"sprint": "SprintButton",
+	"aim_left": "AimLeftButton",
+	"aim_right": "AimRightButton",
+	"aim_up": "AimUpButton",
+	"aim_down": "AimDownButton",
+	"aim_up_left": "AimUpLeftButton",
+	"aim_up_right": "AimUpRightButton",
+	"pause": "PauseButton",
+}
+
+var _binding_buttons: Dictionary = {}
+var _listening_action: String = ""
+var _listening_button: Button = null
 
 
 func _ready() -> void:
@@ -19,6 +40,46 @@ func _ready() -> void:
 	music_slider.value = Settings.music_volume
 	mute_checkbox.button_pressed = Settings.muted
 	_update_high_score()
+	for action in ACTION_BUTTONS:
+		var btn: Button = controls_tab.find_child(ACTION_BUTTONS[action])
+		_binding_buttons[action] = btn
+		btn.pressed.connect(_on_binding_pressed.bind(action))
+		_update_button_text(action)
+	reset_bindings_button.pressed.connect(_on_reset_bindings_pressed)
+
+
+func _update_button_text(action: String) -> void:
+	var btn: Button = _binding_buttons[action]
+	var keycode = Settings.input_bindings.get(action, Settings.DEFAULT_KEYS[action])
+	btn.text = OS.get_keycode_string(keycode)
+
+
+func _on_binding_pressed(action: String) -> void:
+	if _listening_button:
+		_update_button_text(_listening_action)
+	_listening_action = action
+	_listening_button = _binding_buttons[action]
+	_listening_button.text = "..."
+
+
+func _input(event: InputEvent) -> void:
+	if not _listening_button:
+		return
+	if event is InputEventKey and event.pressed:
+		get_viewport().set_input_as_handled()
+		if event.physical_keycode == KEY_ESCAPE:
+			_update_button_text(_listening_action)
+		else:
+			Settings.set_binding(_listening_action, event.physical_keycode)
+			_update_button_text(_listening_action)
+		_listening_action = ""
+		_listening_button = null
+
+
+func _on_reset_bindings_pressed() -> void:
+	Settings.reset_bindings()
+	for action in _binding_buttons:
+		_update_button_text(action)
 
 
 func _on_sfx_changed(value: float) -> void:

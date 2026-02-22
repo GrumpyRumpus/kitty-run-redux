@@ -5,22 +5,28 @@ const KEY_COLOR := Color(0.980, 0.702, 0.529, 1)
 const TEXT_COLOR := Color(0.804, 0.839, 0.957, 1)
 const FONT_SIZE := 10
 
-const HINTS := [
-	{"text": "A/D", "desc": " -- Move", "pos": Vector2(16, 200), "delay": 0.0},
-	{"text": "W", "desc": " -- Jump", "pos": Vector2(16, 216), "delay": 2.0},
-	{"text": "Space", "desc": " -- Shoot", "pos": Vector2(380, 200), "delay": 4.0},
-	{"text": "Mouse/IJKL", "desc": " -- Aim", "pos": Vector2(380, 216), "delay": 6.0},
-]
+var hints: Array[Dictionary] = []
 
 const FADE_IN := 0.3
 const HOLD := 3.0
 const FADE_OUT := 1.0
 
 
+func _key_name(action: String) -> String:
+	var keycode = Settings.input_bindings.get(action, Settings.DEFAULT_KEYS[action])
+	return OS.get_keycode_string(keycode)
+
+
 func _ready() -> void:
 	if Settings.tutorial_seen:
 		queue_free()
 		return
+	hints = [
+		{"text": _key_name("left") + "/" + _key_name("right"), "desc": " -- Move", "pos": Vector2(16, 200), "delay": 0.0},
+		{"text": _key_name("up"), "desc": " -- Jump", "pos": Vector2(16, 216), "delay": 2.0},
+		{"text": _key_name("shoot"), "desc": " -- Shoot", "pos": Vector2(380, 200), "delay": 4.0},
+		{"text": "Mouse/" + _key_name("aim_up_left") + _key_name("aim_up") + _key_name("aim_up_right") + _key_name("aim_left") + _key_name("aim_down") + _key_name("aim_right"), "desc": " -- Aim", "pos": Vector2(380, 216), "delay": 6.0},
+	]
 	_show_hints()
 
 
@@ -28,7 +34,7 @@ func _show_hints() -> void:
 	var tween := create_tween()
 	var panels: Array[PanelContainer] = []
 
-	for hint in HINTS:
+	for hint in hints:
 		var panel := _make_hint(hint.text, hint.desc, hint.pos)
 		add_child(panel)
 		panel.modulate.a = 0.0
@@ -36,7 +42,7 @@ func _show_hints() -> void:
 
 	for i in panels.size():
 		var panel := panels[i]
-		var delay: float = HINTS[i].delay
+		var delay: float = hints[i].delay
 		tween.tween_property(panel, "modulate:a", 1.0, FADE_IN).set_delay(delay)
 		tween.tween_property(panel, "modulate:a", 0.0, FADE_OUT).set_delay(HOLD)
 
