@@ -1,15 +1,40 @@
+# Settings persistence and application (autoload singleton)
+#
+# This singleton owns ALL player preferences: video, audio, controls, and
+# misc flags. Every property uses a setter that:
+#   1. Validates/clamps the value
+#   2. Applies the change to the engine (InputMap, AudioServer, etc.)
+#   3. Saves to disk
+#
+# The save format is a binary file with fixed field order. This is fragile
+# (adding fields requires careful version handling) but simple and fast.
+# The _load() function uses position checks to handle files from older
+# versions that have fewer fields.
+#
+# Key rebinding works by modifying Godot's InputMap at runtime. The default
+# keys from project.godot are overwritten with the player's custom bindings.
+# Arrow key alternatives for movement are always added alongside the custom
+# key, so both WASD and arrow keys work.
+#
+# The _loading flag prevents save loops: setting properties during _load()
+# would trigger their setters, which call _save(), creating an infinite cycle.
 extends Node
 
 signal crt_changed(enabled: bool)
 
 const SAVE_PATH := "user://settings.dat"
 
+# ============================================================
+# KEY BINDINGS
+# ============================================================
+# all actions that can be rebound by the player
 const REBINDABLE_ACTIONS: Array[String] = [
 	"left", "right", "up", "shoot", "sprint",
 	"aim_left", "aim_right", "aim_up", "aim_down", "aim_up_left", "aim_up_right",
 	"pause",
 ]
 
+# factory defaults
 const DEFAULT_KEYS := {
 	"left": KEY_A, "right": KEY_D, "up": KEY_W,
 	"shoot": KEY_SPACE, "sprint": KEY_SHIFT,
@@ -18,12 +43,22 @@ const DEFAULT_KEYS := {
 	"pause": KEY_ESCAPE,
 }
 
+# arrow keys are always available for movement (in addition to custom keys)
 const ARROW_EXTRAS := {
 	"left": KEY_LEFT, "right": KEY_RIGHT, "up": KEY_UP,
 }
 
+# prevents save loops during _load()
 var _loading: bool = false
+# current key bindings (action name -> keycode)
 var input_bindings: Dictionary = {}
+
+# ============================================================
+# SETTINGS PROPERTIES
+# ============================================================
+# each setter validates, applies, and saves. this pattern means you can
+# just write `Settings.crt_enabled = true` from anywhere and the change
+# is immediately applied and persisted.
 
 var crt_enabled: bool = true:
 	set(value):
@@ -52,6 +87,7 @@ var music_volume: float = 0.8:
 var muted: bool = false:
 	set(value):
 		muted = value
+		# bus index 0 is always the Master bus
 		AudioServer.set_bus_mute(0, muted)
 		_save()
 
@@ -77,18 +113,27 @@ func _ready() -> void:
 	AudioServer.set_bus_mute(0, muted)
 
 
+# ============================================================
+# INPUT BINDING
+# ============================================================
+
+# apply all bindings to Godot's InputMap. this clears existing key events
+# for each action and adds the custom binding (plus arrow key extras).
 func _apply_bindings() -> void:
 	if input_bindings.is_empty():
 		input_bindings = DEFAULT_KEYS.duplicate()
 	for action in REBINDABLE_ACTIONS:
 		if not input_bindings.has(action):
 			input_bindings[action] = DEFAULT_KEYS[action]
+		# remove existing keyboard events (preserve non-keyboard events like mouse)
 		for event in InputMap.action_get_events(action):
 			if event is InputEventKey:
 				InputMap.action_erase_event(action, event)
+		# add the player's custom binding
 		var key_event := InputEventKey.new()
 		key_event.physical_keycode = input_bindings[action]
 		InputMap.action_add_event(action, key_event)
+		# add arrow key alternative for movement actions
 		if ARROW_EXTRAS.has(action):
 			var arrow_event := InputEventKey.new()
 			arrow_event.physical_keycode = ARROW_EXTRAS[action]
@@ -107,14 +152,19 @@ func reset_bindings() -> void:
 	_save()
 
 
+# ============================================================
+# DISPLAY
+# ============================================================
+
 func _apply_window_scale() -> void:
 	if fullscreen:
 		return
+	# read the base viewport size from project settings
 	var base_w := ProjectSettings.get_setting("display/window/size/viewport_width") as int
 	var base_h := ProjectSettings.get_setting("display/window/size/viewport_height") as int
 	var win := get_window()
 	win.size = Vector2i(base_w * window_scale, base_h * window_scale)
-	# center window on screen
+	# center the window on screen after resizing
 	var screen_size := DisplayServer.screen_get_size()
 	win.position = (screen_size - win.size) / 2
 
@@ -127,11 +177,24 @@ func _apply_fullscreen() -> void:
 		_apply_window_scale()
 
 
+# ============================================================
+# AUDIO
+# ============================================================
+
+# convert linear volume (0.0-1.0) to decibels for the audio bus.
+# linear_to_db handles the logarithmic curve so 0.5 feels like "half volume."
 func _apply_bus_volume(bus_name: String, volume: float) -> void:
 	var idx := AudioServer.get_bus_index(bus_name)
 	if idx >= 0:
 		AudioServer.set_bus_volume_db(idx, linear_to_db(volume))
 
+
+# ============================================================
+# PERSISTENCE
+# ============================================================
+# binary format: fields are written in a fixed order.
+# the _load() function uses position checks to handle older save files
+# that may not have all fields.
 
 func _save() -> void:
 	if _loading:
@@ -154,9 +217,11 @@ func _load() -> void:
 		return
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file:
+		# _loading flag prevents setter -> _save() loops
 		_loading = true
 		crt_enabled = file.get_8() == 1
 		window_scale = file.get_8()
+		# position checks handle save files from older versions
 		if file.get_position() < file.get_length():
 			sfx_volume = file.get_float()
 			music_volume = file.get_float()
