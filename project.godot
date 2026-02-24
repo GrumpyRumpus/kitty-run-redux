@@ -19,6 +19,13 @@ run/main_scene="uid://ceyiy0s1o4tbs"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+HighScore="*res://scripts/high_score.gd"
+Settings="*res://scripts/settings.gd"
+MusicManager="*res://scripts/music_manager.gd"
+Reticle="*res://scenes/reticle.tscn"
+
 [display]
 
 window/size/viewport_width=512
@@ -114,13 +121,6 @@ aim_up_right={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":79,"key_label":0,"unicode":111,"location":0,"echo":false,"script":null)
 ]
 }
-
-[autoload]
-
-HighScore="*res://scripts/high_score.gd"
-Settings="*res://scripts/settings.gd"
-MusicManager="*res://scripts/music_manager.gd"
-Reticle="*res://scenes/reticle.tscn"
 
 [rendering]
 
