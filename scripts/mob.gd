@@ -69,6 +69,9 @@ enum States {FLAP, SWOOP, SPIRAL, SHOOT}
 var state: States = States.FLAP
 var health: int = DEFAULT_HEALTH
 var is_dead: bool = false
+# true while the hit-flash plays -- stops _process() from overriding
+# the "hurt" animation with the state-based one
+var is_hurt_flashing: bool = false
 
 
 func _ready() -> void:
@@ -121,9 +124,14 @@ func _process(delta: float) -> void:
 		or position.y < -OFFSCREEN_MARGIN or position.y > vp.size.y + OFFSCREEN_MARGIN:
 		queue_free()
 		return
-	# pick animation based on current behavior
+	# pick animation based on current behavior. skip while the hurt flash
+	# plays so it doesn't get overridden one frame in.
+	# note: match uses COMMAS for multiple patterns per branch. `|` would
+	# be bitwise OR (FLAP|SWOOP|SPIRAL == 3 == SHOOT) and match the wrong state.
+	if is_hurt_flashing:
+		return
 	match state:
-		States.FLAP | States.SWOOP | States.SPIRAL:
+		States.FLAP, States.SWOOP, States.SPIRAL:
 			sprite.play("flap")
 		States.SHOOT:
 			sprite.play("shoot")
@@ -142,6 +150,7 @@ func take_damage(amount: int) -> void:
 	else:
 		# non-lethal hit: emit for combo extension + flash feedback
 		mob_hit.emit()
+		is_hurt_flashing = true
 		sprite.play("hurt")
 		# set flash to full white, then tween it back to normal.
 		# the shader interpolates between the sprite texture and white
@@ -150,8 +159,8 @@ func take_damage(amount: int) -> void:
 		var tween := create_tween()
 		tween.tween_property(sprite.material, "shader_parameter/flash_amount", 0.0, HIT_FLASH_DURATION)
 		await tween.finished
-		if not is_dead:
-			sprite.play("flap")
+		# _process() resumes the state-appropriate animation next frame
+		is_hurt_flashing = false
 
 
 func _die() -> void:
