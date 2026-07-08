@@ -56,6 +56,20 @@ var combo_count: int = 0
 var combo_timer: float = 0.0
 # track previous health to detect damage vs healing
 var _last_health: int = Kitty.MAX_HEALTH
+# generation counter for hitstop: each hitstop bumps it, and a timer only
+# restores normal time if no newer hitstop started after it. without this,
+# overlapping hitstops (stomp then bullet kill 20ms later) would end each
+# other early via whichever timer fires first.
+var _hitstop_id: int = 0
+# camera offset is the SUM of two independent sources (screen shake and
+# shot punch), combined in _process(). tweening camera.offset directly
+# from both places made the tweens fight over the whole property -- a
+# shake's return-to-center could stomp a punch mid-recoil and vice versa.
+var _shake_offset: Vector2 = Vector2.ZERO
+var _punch_offset: Vector2 = Vector2.ZERO
+# kept so a new shake/punch can kill the previous tween on ITS OWN source
+var _shake_tween: Tween
+var _punch_tween: Tween
 
 
 # ============================================================
@@ -84,6 +98,9 @@ func _exit_tree() -> void:
 	# if we don't disconnect, the autoload holds a reference to a freed node,
 	# causing errors on the next scene change.
 	Settings.crt_changed.disconnect(_on_crt_changed)
+	# a hitstop timer may still be mid-flight when this scene is freed
+	# (restart/quit); make sure the engine isn't left in slow motion.
+	Engine.time_scale = 1.0
 	# kitty signals technically auto-disconnect when the scene is freed
 	# (both ends are freed together), but explicit cleanup is safer.
 	if is_instance_valid(kitty):
@@ -112,6 +129,9 @@ func _unhandled_input(event: InputEvent) -> void:
 # ============================================================
 
 func _process(delta: float) -> void:
+	# combine the two camera-feel sources into the actual camera offset.
+	# runs before the game-over guard so an in-flight shake still settles.
+	camera.offset = _shake_offset + _punch_offset
 	if is_game_over:
 		return
 	# -------------------- Passive Score --------------------
@@ -200,10 +220,13 @@ func _on_kitty_stomped() -> void:
 # then tween it back. this creates a subtle recoil effect that makes
 # shooting feel impactful without disrupting gameplay.
 func _on_kitty_shot_fired(dir: Vector2) -> void:
-	var punch := -dir * 1.5
-	camera.offset = punch
-	var tween := create_tween()
-	tween.tween_property(camera, "offset", Vector2.ZERO, 0.06)
+	# kill the previous punch tween so rapid fire doesn't stack tweens
+	# fighting over the same value
+	if _punch_tween and _punch_tween.is_valid():
+		_punch_tween.kill()
+	_punch_offset = -dir * 1.5
+	_punch_tween = create_tween()
+	_punch_tween.tween_property(self, "_punch_offset", Vector2.ZERO, 0.06)
 
 
 func _on_kitty_health_changed(new_health: int) -> void:
@@ -286,24 +309,43 @@ func _on_quit_pressed() -> void:
 # The timer uses process_always=true so it ticks in real time even though
 # Engine.time_scale is slowed. ignore_time_scale=true (4th arg) ensures
 # the timer isn't affected by the very time_scale change we just made.
+#
+# The generation id makes overlapping hitstops safe: only the timer from
+# the MOST RECENT hitstop restores normal time, so an earlier timer can't
+# cut a newer hitstop short. (_exit_tree() restores time_scale as a
+# backstop if the scene is freed while a timer is in flight.)
 func _hitstop(time_scale: float, duration: float) -> void:
 	Engine.time_scale = time_scale
+	_hitstop_id += 1
+	var id := _hitstop_id
 	get_tree().create_timer(duration, true, false, true).timeout.connect(
-		func(): Engine.time_scale = 1.0
+		func(): _end_hitstop(id)
 	)
+
+
+func _end_hitstop(id: int) -> void:
+	# stale timer from a hitstop that was superseded by a newer one
+	if id != _hitstop_id:
+		return
+	Engine.time_scale = 1.0
 
 
 # Screen shake: rapidly offsets the camera with random jitter, then
 # returns to center. Higher intensity = wider jitter, longer duration =
 # more shake steps. snappedf rounds to whole pixels for crisp pixel art.
+# Tweens _shake_offset (not camera.offset directly) so shake composes
+# with the shot punch instead of fighting it.
 func _screen_shake(intensity: float, duration: float) -> void:
-	var tween := create_tween()
+	# a new shake replaces any shake still in progress
+	if _shake_tween and _shake_tween.is_valid():
+		_shake_tween.kill()
+	_shake_tween = create_tween()
 	var steps := int(duration / 0.05)
 	for i in steps:
 		var offset := Vector2(
 			snappedf(randf_range(-intensity, intensity), 1.0),
 			snappedf(randf_range(-intensity, intensity), 1.0)
 		)
-		tween.tween_property(camera, "offset", offset, 0.05)
+		_shake_tween.tween_property(self, "_shake_offset", offset, 0.05)
 	# always return to center after the last shake step
-	tween.tween_property(camera, "offset", Vector2.ZERO, 0.05)
+	_shake_tween.tween_property(self, "_shake_offset", Vector2.ZERO, 0.05)
